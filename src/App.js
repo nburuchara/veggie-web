@@ -7,9 +7,12 @@ import fire from '../src/database/firebase'
 import Home from './home/Home';
 
 
+
+// - - HERE IS WHERE ALL CSS GOES - - //
+
 const Styles = styled.div `
 
-  // - - HERE IS WHERE ALL CSS GOES - - //
+  
 
 
 `

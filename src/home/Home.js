@@ -71,6 +71,56 @@ const Styles = styled.div `
 .signUp h1 {
     font-family: Karla;
     color: black;
+    margin-bottom:30px;
+}
+
+.signUp h4 {
+    font-family: Karla;
+    color: #2CB430;
+}
+
+.signUp input {
+    height: 42.5px;
+    margin-bottom: 20px;
+    width: 255px;
+    border-radius: 8px;
+    border: 0.1px solid black;
+    outline: none;
+    padding: 10px;
+}
+
+.signUp button {a
+    margin-top: 15px;
+    margin-bottom: 55px;
+    height: 45px;
+    width: 100px;
+    border-radius: 8px;
+    outline: none;
+    background-color: #2CB430;
+    color: white;
+    font-family: Karla;
+    border: 2px solid #2CB430;
+}
+
+.fullName {
+    text-align: center;
+}
+
+    // - - GROUP INFO - - //
+
+.groupInfo {
+    margin-top: 10%;
+}
+
+.groupInfo h1 {
+    font-family: Karla;
+    color: black;
+    margin-bottom:30px;
+}
+
+.groupInfo h4 {
+    font-family: Karla;
+    color: #2CB430;
 }
 
 
@@ -80,8 +130,10 @@ export default class Home extends Component {
     constructor () {
         super()
         this.state = {
-            showLogin : true,
-            showSignup: false,
+            showLogin : false,
+            showSignup: true,
+            showVerify: false,
+            showGroupInfo: false,
             loginErrorMsg: "",
             email: "",
             password: ""
@@ -104,6 +156,13 @@ export default class Home extends Component {
             [event.target.id] : event.target.value
         })
         console.log(event.target.value)
+    }
+
+    getGroupInfo = () => {
+        this.setState({
+            showSignup: false,
+            showGroupInfo: true
+        })
     }
 
     render () {
@@ -144,7 +203,43 @@ export default class Home extends Component {
                 {this.state.showSignup && 
                     <div className="signUp">
                         <h1>Sign Up</h1>
+                        <h4>Full Name</h4>
+                        <input
+                        className="fullName"
+                        />
+                        <h4>Email</h4>
                         <input/>
+                        <h4>Class</h4>
+                        <input
+                        className="fullName"
+                        />
+                        <h4>Password</h4>
+                        <input
+                        className="fullName"
+                        type="password"
+                        />
+                        <h4>Confirm Password</h4>
+                        <input
+                        className="fullName"
+                        type="password"
+                        /> <br/>
+                        <button
+                        onClick={this.getGroupInfo}
+                        >Continue</button>
+                    </div>
+                }
+                {this.state.showGroupInfo && 
+                    <div className="groupInfo">
+                        <h1>You're almost all set up!</h1>
+                        <h4>Group Name</h4>
+                        <input/>
+                        <h4>Project Name</h4>
+                        <input/> 
+                    </div>
+                }
+                {this.state.showVerify && 
+                    <div>
+
                     </div>
                 }
             </Styles>
