@@ -9,11 +9,13 @@ const Styles = styled.div `
 .header {
     margin-top: 100px;
     text-align: center;
+    background-color: #154360;
 }
 
 .header h1 {
     font-family: Fascinate;
     font-size: 55px;
+    color: #FDFEFE;
 }
 
 .header img {
@@ -35,28 +37,29 @@ const Styles = styled.div `
 
 .login h4 {
     font-family: Karla;
+    color: #FDFEFE;
 }
 
 .login button {
     background-color: transparent;
-    color: black;
+    color: #3498DB;
     margin-bottom: 1.5%;
     height: 45px;
-    border: 2px solid #2CB430;
+    border: 2px solid #F39C12;
     border-radius: 25px;
     width: 100px;
     font-family: Karla;
 }
 
 .login button:hover {
-    background-color: #2CB430;
+    background-color: #F39C12;
     color: white;
 }
 
     // - - SIGNUP REDIRECT BUTTON - - //
 
 .signupRedirect button {
-    background-color: #2CB430;
+    background-color: #F39C12;
     width: 220px !important;
     color: white;
     font-family: Karla;
@@ -140,8 +143,8 @@ export default class Home extends Component {
     constructor () {
         super()
         this.state = {
-            showLogin : false,
-            showSignup: true,
+            showLogin : true,
+            showSignup: false,
             showVerify: false,
             showGroupInfo: false,
             loginErrorMsg: "",
