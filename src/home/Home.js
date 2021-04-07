@@ -123,6 +123,16 @@ const Styles = styled.div `
     color: #2CB430;
 }
 
+.groupInfo input {
+    height: 42.5px;
+    margin-bottom: 20px;
+    width: 255px;
+    border-radius: 8px;
+    border: 0.1px solid black;
+    outline: none;
+    padding: 10px;
+}
+
 
 `
 
