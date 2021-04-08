@@ -7,7 +7,6 @@ const Styles = styled.div `
     // - - HEADER - - //
 
 .header {
-    margin-top: 100px;
     text-align: center;
     background-color: #154360;
 }
@@ -16,6 +15,7 @@ const Styles = styled.div `
     font-family: Fascinate;
     font-size: 55px;
     color: #FDFEFE;
+    
 }
 
 .header img {
@@ -63,6 +63,7 @@ const Styles = styled.div `
     width: 220px !important;
     color: white;
     font-family: Karla;
+    margin-bottom: 100px;
 }
 
     // - - SIGNUP - - //
@@ -92,7 +93,7 @@ const Styles = styled.div `
     padding: 10px;
 }
 
-.signUp button {a
+.signUp button {
     margin-top: 15px;
     margin-bottom: 55px;
     height: 45px;
@@ -136,6 +137,19 @@ const Styles = styled.div `
     padding: 10px;
 }
 
+.groupInfo button {
+    margin-top: 15px;
+    margin-bottom: 55px;
+    height: 45px;
+    width: 100px;
+    border-radius: 8px;
+    outline: none;
+    background-color: #154360;
+    color: white;
+    font-family: Karla;
+    border: 2px solid #154360;
+}
+
 
 `
 
@@ -143,13 +157,19 @@ export default class Home extends Component {
     constructor () {
         super()
         this.state = {
-            showLogin : true,
-            showSignup: false,
+            user: null,
+            showLogin : false,
+            showSignup: true,
             showVerify: false,
             showGroupInfo: false,
             loginErrorMsg: "",
+            name: "",
             email: "",
-            password: ""
+            password: "",
+            class: "",
+            confirmPassword: "",
+            project: "",
+            group: ""
         }
     }
 
@@ -175,6 +195,34 @@ export default class Home extends Component {
         this.setState({
             showSignup: false,
             showGroupInfo: true
+        })
+    }
+
+    registerUser = () => {
+
+    }
+
+    signUp = () => {
+        //* signup function
+        fire.auth().createUserWithEmailAndPassword(this.state.email, this.state.password).then((u) =>{
+            localStorage.setItem("logged", true)
+            window.location.href = '/'
+        }).catch((error) => {
+            alert(error)
+        })
+
+    }
+
+    saveUserData = () => {
+        fire.firestore().collection("userData").add({
+            
+        })
+    }
+
+    handleChange = (event) => {
+        console.log(event.target.value)
+        this.setState({
+            [event.target.id] : event.target.value
         })
     }
 
@@ -218,23 +266,39 @@ export default class Home extends Component {
                         <h1>Sign Up</h1>
                         <h4>Full Name</h4>
                         <input
+                        id="name"
+                        value={this.state.name}
                         className="fullName"
+                        onChange={this.handleChange}
                         />
                         <h4>Email</h4>
-                        <input/>
+                        <input
+                        id="email"
+                        value={this.state.email}
+                        onChange={this.handleChange}
+                        />
                         <h4>Class</h4>
                         <input
+                        id="class"
+                        value={this.state.class}
                         className="fullName"
+                        onChange={this.handleChange}
                         />
                         <h4>Password</h4>
                         <input
+                        id="password"
+                        value={this.state.password}
                         className="fullName"
                         type="password"
+                        onChange={this.handleChange}
                         />
                         <h4>Confirm Password</h4>
                         <input
+                        id="confirmPassword"
+                        value={this.state.confirmPassword}
                         className="fullName"
                         type="password"
+                        onChange={this.handleChange}
                         /> <br/>
                         <button
                         onClick={this.getGroupInfo}
@@ -245,9 +309,19 @@ export default class Home extends Component {
                     <div className="groupInfo">
                         <h1>You're almost all set up!</h1>
                         <h4>Group Name</h4>
-                        <input/>
+                        <input
+                        id="group"
+                        value={this.state.group}
+                        className="fullName"
+                        onChange={this.handleChange}
+                        />
                         <h4>Project Name</h4>
-                        <input/> 
+                        <input
+                        id="project"
+                        value={this.state.project}
+                        className="fullName"
+                        onChange={this.handleChange}
+                        /> 
                     </div>
                 }
                 {this.state.showVerify && 
