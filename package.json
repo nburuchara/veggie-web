@@ -1,5 +1,6 @@
 {
   "name": "veggie-web",
+  "homepage": "https://inspoapp.me",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

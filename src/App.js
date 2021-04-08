@@ -5,6 +5,7 @@ import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import styled from 'styled-components'
 import fire from '../src/database/firebase'
 import Home from './home/Home';
+import Dashboard from './dashboard/Dashboard'
 
 
 
@@ -57,6 +58,7 @@ class App extends Component {
             <React.Fragment>
               <Router>
                 <Switch>
+                  <Route exact path = "/" render = {() => <Dashboard/>}/>
                 </Switch>
               </Router>
             </React.Fragment>
