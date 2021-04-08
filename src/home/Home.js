@@ -173,8 +173,8 @@ export default class Home extends Component {
         super()
         this.state = {
             user: null,
-            showLogin : false,
-            showSignup: true,
+            showLogin : true,
+            showSignup: false,
             showVerify: false,
             showGroupInfo: false,
             loginErrorMsg: "",
@@ -207,10 +207,18 @@ export default class Home extends Component {
     }
 
     getGroupInfo = () => {
-        this.setState({
-            showSignup: false,
-            showGroupInfo: true
-        })
+        if (this.state.email!= "" 
+        && this.state.password != "" 
+        && this.state.name != ""
+        && this.state.class != ""
+        && this.state.confirmPassword != "") {
+            this.setState({
+                showSignup: false,
+                showGroupInfo: true
+            })
+        } else {
+            console.log("errormsg")
+        }
     }
 
     registerUser = () => {
@@ -218,14 +226,12 @@ export default class Home extends Component {
     }
 
     signUp = () => {
-        //* signup function
         fire.auth().createUserWithEmailAndPassword(this.state.email, this.state.password).then((u) =>{
             localStorage.setItem("logged", true)
             window.location.href = '/'
         }).catch((error) => {
             alert(error)
         })
-
     }
 
     saveUserData = () => {
@@ -249,7 +255,7 @@ export default class Home extends Component {
                         <h1>Welcome to Veggie Code (Web)</h1>
                         <img src="/assets/logo.gif"/>
                             <div className="login">
-                                <h4>Username</h4>
+                                <h4>Email</h4>
                                 <input
                                 id="email"
                                 type="email"
