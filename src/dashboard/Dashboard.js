@@ -19,7 +19,7 @@ export default class Dashboard extends Component {
     render () {
         return(
             <Styles>
-
+                <h1>TEXT EDITOR AND EVERYTHIG ELSE </h1>
             </Styles>
         )
     }
