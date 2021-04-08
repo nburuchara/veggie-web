@@ -239,7 +239,7 @@ export default class Home extends Component {
     }
 
     signUp = () => {
-        if (!this.state.group == "" && !this.state.class == "") {
+        if (!this.state.group == "" && !this.state.project == "") {
             this.saveUserData()
             fire.auth().createUserWithEmailAndPassword(this.state.email, this.state.password).then((u) =>{
                 localStorage.setItem("logged", true)
@@ -358,9 +358,19 @@ export default class Home extends Component {
                         <h2>SpaceFill2</h2>
                         <h1>You're almost all set up!</h1>
                         <h4>Group Name</h4>
-                        <input/>
+                        <input
+                        id="group"
+                        value={this.state.group}
+                        onChange={this.handleChange}
+                        className="fullName"
+                        />
                         <h4 className = "second_input">Project Name</h4>
-                        <input/> 
+                        <input
+                        id="project"
+                        value={this.state.project}
+                        onChange={this.handleChange}
+                        className="fullName"
+                        /> 
                         <p>{this.state.groupInfoErrMsg}</p>
                         <button
                         onClick={this.signUp}
