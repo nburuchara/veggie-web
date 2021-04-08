@@ -69,18 +69,24 @@ const Styles = styled.div `
     // - - SIGNUP - - //
 
 .signUp {
-    margin-top: 10%;
+
 }
 
 .signUp h1 {
     font-family: Karla;
-    color: black;
+    color: #FDFEFE;;
+    margin-bottom:30px;
+}
+
+.signUp h2 {
+    font-family: Karla;
+    color:  #15435F;
     margin-bottom:30px;
 }
 
 .signUp h4 {
     font-family: Karla;
-    color: #2CB430;
+    color: white
 }
 
 .signUp input {
@@ -100,10 +106,10 @@ const Styles = styled.div `
     width: 100px;
     border-radius: 8px;
     outline: none;
-    background-color: #2CB430;
+    background-color: #F39C12;
     color: white;
     font-family: Karla;
-    border: 2px solid #2CB430;
+    border: 2px solid #F39C12;
 }
 
 .fullName {
@@ -113,18 +119,27 @@ const Styles = styled.div `
     // - - GROUP INFO - - //
 
 .groupInfo {
-    margin-top: 10%;
+    background-color: #154360;
+    margin-bottom: 3px;
 }
 
 .groupInfo h1 {
     font-family: Karla;
     color: black;
     margin-bottom:30px;
+    color: white
+}
+
+.groupInfo h2 {
+    font-family: Karla;
+    color:  #154350;
+    margin-bottom:30px;
 }
 
 .groupInfo h4 {
     font-family: Karla;
-    color: #2CB430;
+    color: white
+    
 }
 
 .groupInfo input {
@@ -139,15 +154,15 @@ const Styles = styled.div `
 
 .groupInfo button {
     margin-top: 15px;
-    margin-bottom: 55px;
+    margin-bottom: 325px;
     height: 45px;
     width: 100px;
     border-radius: 8px;
     outline: none;
-    background-color: #154360;
+    background-color: #F39C12;
     color: white;
     font-family: Karla;
-    border: 2px solid #154360;
+    border: 2px solid #F39C12;
 }
 
 
@@ -161,7 +176,7 @@ export default class Home extends Component {
             showLogin : false,
             showSignup: true,
             showVerify: false,
-            showGroupInfo: false,
+            showGroupInfo: true,
             loginErrorMsg: "",
             name: "",
             email: "",
@@ -263,6 +278,7 @@ export default class Home extends Component {
                 }
                 {this.state.showSignup && 
                     <div className="signUp">
+                        <h2>SpaceFill1</h2>
                         <h1>Sign Up</h1>
                         <h4>Full Name</h4>
                         <input
@@ -307,21 +323,14 @@ export default class Home extends Component {
                 }
                 {this.state.showGroupInfo && 
                     <div className="groupInfo">
+                        <h2>SpaceFill2</h2>
                         <h1>You're almost all set up!</h1>
                         <h4>Group Name</h4>
-                        <input
-                        id="group"
-                        value={this.state.group}
-                        className="fullName"
-                        onChange={this.handleChange}
-                        />
-                        <h4>Project Name</h4>
-                        <input
-                        id="project"
-                        value={this.state.project}
-                        className="fullName"
-                        onChange={this.handleChange}
-                        /> 
+                        <input/>
+                        <h4 className = "second_input">Project Name</h4>
+                        <input/> 
+                        <br/>
+                        <button><b>Finish</b></button>
                     </div>
                 }
                 {this.state.showVerify && 
