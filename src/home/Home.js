@@ -99,6 +99,12 @@ const Styles = styled.div `
     padding: 10px;
 }
 
+.signUp p {
+    color: white;
+    font-family: Karla;
+    font-size: 20px;
+}
+
 .signUp button {
     margin-top: 15px;
     margin-bottom: 95px;
@@ -140,6 +146,12 @@ const Styles = styled.div `
     font-family: Karla;
     color: white
     
+}
+
+.groupInfo p {
+    color: white;
+    font-family: Karla;
+    font-size: 20px;
 }
 
 .groupInfo input {
@@ -184,7 +196,9 @@ export default class Home extends Component {
             class: "",
             confirmPassword: "",
             project: "",
-            group: ""
+            group: "",
+            signUpErrMsg:"",
+            groupInfoErrMsg: ""
         }
     }
 
@@ -211,32 +225,43 @@ export default class Home extends Component {
         && this.state.password != "" 
         && this.state.name != ""
         && this.state.class != ""
-        && this.state.confirmPassword != "") {
+        && this.state.confirmPassword != ""
+        && this.state.password === this.state.confirmPassword) {
             this.setState({
                 showSignup: false,
                 showGroupInfo: true
             })
         } else {
-            console.log("errormsg")
+            this.setState({
+                signUpErrMsg: "Please fill out all the fields correctly"
+            })
         }
     }
 
-    registerUser = () => {
-
-    }
-
     signUp = () => {
-        fire.auth().createUserWithEmailAndPassword(this.state.email, this.state.password).then((u) =>{
-            localStorage.setItem("logged", true)
-            window.location.href = '/'
-        }).catch((error) => {
-            alert(error)
-        })
+        if (!this.state.group == "" && !this.state.class == "") {
+            this.saveUserData()
+            fire.auth().createUserWithEmailAndPassword(this.state.email, this.state.password).then((u) =>{
+                localStorage.setItem("logged", true)
+                window.location.href = '/'
+            }).catch((error) => {
+                alert(error)
+            })
+        } else {
+            this.setState({
+                groupInfoErrMsg: "Please fill out all fields correctly"
+            })
+        }
     }
 
     saveUserData = () => {
         fire.firestore().collection("userData").add({
-            
+            name: this.state.name,
+            email: this.state.email,
+            password: this.state.password,
+            class: this.state.class,
+            group: this.state.group,
+            project: this.state.project
         })
     }
 
@@ -321,7 +346,8 @@ export default class Home extends Component {
                         className="fullName"
                         type="password"
                         onChange={this.handleChange}
-                        /> <br/>
+                        /> 
+                        <p>{this.state.signUpErrMsg}</p>
                         <button
                         onClick={this.getGroupInfo}
                         ><b>Continue</b></button>
@@ -335,13 +361,10 @@ export default class Home extends Component {
                         <input/>
                         <h4 className = "second_input">Project Name</h4>
                         <input/> 
-                        <br/>
-                        <button><b>Finish</b></button>
-                    </div>
-                }
-                {this.state.showVerify && 
-                    <div>
-
+                        <p>{this.state.groupInfoErrMsg}</p>
+                        <button
+                        onClick={this.signUp}
+                        ><b>Finish</b></button>
                     </div>
                 }
             </Styles>
