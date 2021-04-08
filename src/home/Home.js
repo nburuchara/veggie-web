@@ -101,7 +101,7 @@ const Styles = styled.div `
 
 .signUp button {
     margin-top: 15px;
-    margin-bottom: 55px;
+    margin-bottom: 95px;
     height: 45px;
     width: 100px;
     border-radius: 8px;
@@ -154,7 +154,7 @@ const Styles = styled.div `
 
 .groupInfo button {
     margin-top: 15px;
-    margin-bottom: 325px;
+    margin-bottom: 390px;
     height: 45px;
     width: 100px;
     border-radius: 8px;
@@ -176,7 +176,7 @@ export default class Home extends Component {
             showLogin : false,
             showSignup: true,
             showVerify: false,
-            showGroupInfo: true,
+            showGroupInfo: false,
             loginErrorMsg: "",
             name: "",
             email: "",
@@ -318,7 +318,7 @@ export default class Home extends Component {
                         /> <br/>
                         <button
                         onClick={this.getGroupInfo}
-                        >Continue</button>
+                        ><b>Continue</b></button>
                     </div>
                 }
                 {this.state.showGroupInfo && 
