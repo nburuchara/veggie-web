@@ -40,6 +40,12 @@ const Styles = styled.div `
     color: #FDFEFE;
 }
 
+.login p {
+    color: white;
+    font-family: Karla;
+    font-size: 20px;
+}
+
 .login button {
     background-color: transparent;
     color: #3498DB;
@@ -198,12 +204,26 @@ export default class Home extends Component {
             project: "",
             group: "",
             signUpErrMsg:"",
-            groupInfoErrMsg: ""
+            groupInfoErrMsg: "",
+            loginErrorMsg: ""
         }
     }
 
     login = () => {
-
+        if (this.state.email != "" && this.state.password != ""){
+            fire.auth().signInWithEmailAndPassword(this.state.email, this.state.password).then((u)=>{
+                localStorage.setItem('logged', true)
+                window.location.href = '/'
+            }).catch((error)=>{
+                this.setState({
+                    loginErrorMsg: "⚠️ Email or password are incorrect"
+                })
+            })
+        } else {
+            this.setState({
+                loginErrorMsg: "Please fill out your email and password"
+            })
+        }
     }
 
     registerAccount = () => {
@@ -347,7 +367,7 @@ export default class Home extends Component {
                         type="password"
                         onChange={this.handleChange}
                         /> 
-                        <p>{this.state.signUpErrMsg}</p>
+                        <p>{this.state.signUpErrMsglgi}</p>
                         <button
                         onClick={this.getGroupInfo}
                         ><b>Continue</b></button>
