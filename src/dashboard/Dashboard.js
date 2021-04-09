@@ -31,14 +31,16 @@ body {
     margin-bottom: 20px;
 }
 
-
+.parent h2 {
+    color: #154360
+}
 
     // - - PAGE DIMENSIONS - - //
 
 .dashEditor {
     text-align: center;
     height: 500px;
-    margin-bottom:180px;
+    margin-bottom:100px;
     background-color: #154360;
 }
 
@@ -98,6 +100,7 @@ export default class Dashboard extends Component {
                             }}
                             />
                         </div>
+                    <h2> TextFill2</h2>
                 </div>
             </Styles>
         )
