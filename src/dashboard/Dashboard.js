@@ -19,25 +19,23 @@ body {
     background-color: #154360;
 }
 
+.parent button {
+    margin-top: 20px;
+    border-radius: 8px;
+    height: 40px;
+    background-color: #F39C12;
+    font-family: Karla;
+    border: 2px solid #F39C12;
+    color: white;
+    margin-bottom: 20px;
+}
+
     // - - PAGE DIMENSIONS - - //
 
-.dashCol:after {
-    content: "";
-    display: table;
-    clear: both;
-}
 
 .dashEditor {
-    float: left;
-    width: 50%;
     text-align: center;
     height: 500px;
-}
-
-.dashChat {
-    float: left;
-    width: 50%;
-    text-align: center;
 }
 
 
@@ -72,11 +70,17 @@ export default class Dashboard extends Component {
         }
     }
 
+    logout = () => {
+        fire.auth().signOut();
+    }
+
     render () {
         return(
             <Styles>
                 <div className="parent">
-                    <div className="dashCol">
+                    <button
+                    onClick={this.logout}
+                    ><b>Logout</b></button>
                         <div className="dashEditor">
                             <h3>Text Editor goes here </h3>
                             <CodeMirror
@@ -89,10 +93,6 @@ export default class Dashboard extends Component {
                             }}
                             />
                         </div>
-                        <div className="dashChat">
-                            <h3>Chat window goes here</h3>
-                        </div>
-                    </div>
                 </div>
             </Styles>
         )
