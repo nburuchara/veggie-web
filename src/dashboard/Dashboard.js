@@ -19,6 +19,7 @@ body {
     background-color: #154360;
 }
 
+
 .parent button {
     margin-top: 20px;
     border-radius: 8px;
@@ -30,12 +31,15 @@ body {
     margin-bottom: 20px;
 }
 
-    // - - PAGE DIMENSIONS - - //
 
+
+    // - - PAGE DIMENSIONS - - //
 
 .dashEditor {
     text-align: center;
     height: 500px;
+    margin-bottom:180px;
+    background-color: #154360;
 }
 
 
@@ -78,6 +82,7 @@ export default class Dashboard extends Component {
         return(
             <Styles>
                 <div className="parent">
+
                     <button
                     onClick={this.logout}
                     ><b>Logout</b></button>
