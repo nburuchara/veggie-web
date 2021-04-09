@@ -19,27 +19,18 @@ body {
     background-color: #154360;
 }
 
+.parent h2 {
+    color: #154360
+}
+
     // - - PAGE DIMENSIONS - - //
 
-.dashCol:after {
-    content: "";
-    display: table;
-    clear: both;
-}
-
 .dashEditor {
-    float: left;
-    width: 50%;
     text-align: center;
     height: 500px;
+    margin-bottom:180px;
+    background-color: #154360;
 }
-
-.dashChat {
-    float: left;
-    width: 50%;
-    text-align: center;
-}
-
 
 // - - TEXT EDITOR - - //
 
@@ -76,23 +67,19 @@ export default class Dashboard extends Component {
         return(
             <Styles>
                 <div className="parent">
-                    <div className="dashCol">
-                        <div className="dashEditor">
-                            <h3>Text Editor goes here </h3>
-                            <CodeMirror
-                            className="textEditor"
-                            value={code}
-                            options={{
-                            theme: 'monokai',
-                            keyMap: 'sublime',
-                            mode: 'jsx',
-                            }}
-                            />
-                        </div>
-                        <div className="dashChat">
-                            <h3>Chat window goes here</h3>
-                        </div>
+                    <div className="dashEditor">
+                        <h3>Text Editor goes here </h3>
+                        <CodeMirror
+                        className="textEditor"
+                        value={code}
+                        options={{
+                        theme: 'monokai',
+                        keyMap: 'sublime',
+                        mode: 'jsx',
+                        }}
+                        />
                     </div>
+                    <h2>SpaceFill2</h2>
                 </div>
             </Styles>
         )
