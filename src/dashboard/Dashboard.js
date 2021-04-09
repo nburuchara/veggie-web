@@ -19,9 +19,19 @@ body {
     background-color: #154360;
 }
 
-.parent h2 {
-    color: #154360
+
+.parent button {
+    margin-top: 20px;
+    border-radius: 8px;
+    height: 40px;
+    background-color: #F39C12;
+    font-family: Karla;
+    border: 2px solid #F39C12;
+    color: white;
+    margin-bottom: 20px;
 }
+
+
 
     // - - PAGE DIMENSIONS - - //
 
@@ -31,6 +41,7 @@ body {
     margin-bottom:180px;
     background-color: #154360;
 }
+
 
 // - - TEXT EDITOR - - //
 
@@ -63,23 +74,30 @@ export default class Dashboard extends Component {
         }
     }
 
+    logout = () => {
+        fire.auth().signOut();
+    }
+
     render () {
         return(
             <Styles>
                 <div className="parent">
-                    <div className="dashEditor">
-                        <h3>Text Editor goes here </h3>
-                        <CodeMirror
-                        className="textEditor"
-                        value={code}
-                        options={{
-                        theme: 'monokai',
-                        keyMap: 'sublime',
-                        mode: 'jsx',
-                        }}
-                        />
-                    </div>
-                    <h2>SpaceFill2</h2>
+
+                    <button
+                    onClick={this.logout}
+                    ><b>Logout</b></button>
+                        <div className="dashEditor">
+                            <h3>Text Editor goes here </h3>
+                            <CodeMirror
+                            className="textEditor"
+                            value={code}
+                            options={{
+                            theme: 'monokai',
+                            keyMap: 'sublime',
+                            mode: 'jsx',
+                            }}
+                            />
+                        </div>
                 </div>
             </Styles>
         )
