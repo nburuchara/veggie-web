@@ -6,6 +6,7 @@ import styled from 'styled-components'
 // import 'codemirror/theme/monokai.css';
 import {UnControlled as CodeMirror} from 'react-codemirror2'
 
+
 var code = 'const b = 0;';
 const Styles = styled.div `
 
@@ -50,6 +51,18 @@ body {
 .dashEditor h3 {
     color: white;
     font-family: Karla;
+}
+
+.dashEditor textarea {
+    width: 100%;
+    color: white;
+    background-color: #1C2833;
+    outline: none;
+    border: 2px solid #154360;
+    height: 500px;
+    padding-left: 50px;
+    padding-right: 50px;
+    font-family: Consolas;
 }
 
 // - - CHAT WINDOW - - //
@@ -100,19 +113,25 @@ export default class Dashboard extends Component {
        console.log(this.state.normansCode)
     }
 
+    handleChange = (e) => {
+        var code = e.target.value
+        this.setState({
+            [e.target.id]: e.target.value
+        })
+    }
+
 
     render () {
         
         return(
             <Styles>
                 <div className="parent">
-
                     <button
                     onClick={this.logout}
                     ><b>Logout</b></button>
                         <div className="dashEditor">
                             <h3>Text Editor goes here </h3>
-                            <CodeMirror
+                            {/* <CodeMirror
                             value={this.state.normansCode}
                             // options={options}
                             onBeforeChange={(editor, data, value) => {
@@ -123,7 +142,12 @@ export default class Dashboard extends Component {
                                     normansCode: value
                                 })
                             }}
-/>
+                            /> */}
+                            <textarea
+                            id="normansCode"
+                            value={this.state.normansCode}
+                            onChange={this.handleChange}
+                            />
                             <br/>
                             {/* <button>Todo</button>
                             <button
@@ -133,7 +157,7 @@ export default class Dashboard extends Component {
                     <h2> TextFill2</h2>
 
                     <button
-                    onClick={()=> t.setValue("this is a test")}
+                    onClick={this.pull}
                     ><b>Pull</b></button>
 
                     <button
