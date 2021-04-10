@@ -5,8 +5,7 @@ import CodeMirror from '@uiw/react-codemirror';
 import 'codemirror/keymap/sublime';
 import 'codemirror/theme/monokai.css';
 
-const code = 'const a = 0;';
-
+var code = 'const b = 0;';
 const Styles = styled.div `
 
 body {
@@ -72,13 +71,15 @@ export default class Dashboard extends Component {
     constructor() {
         super()
         this.state = {
-            
+            userCode: code,
+            studentName: "Eric"
         }
     }
 
     logout = () => {
         fire.auth().signOut();
     }
+
 
     push = () => {
         /** Get the content of the current editor document. You can pass it an optional argument to specify the string to be used to separate lines (defaults to "\n"). */
@@ -90,7 +91,11 @@ export default class Dashboard extends Component {
         setValue(content: string): void;
     }
 
+
     render () {
+
+        
+
         return(
             <Styles>
                 <div className="parent">
@@ -109,6 +114,11 @@ export default class Dashboard extends Component {
                             mode: 'jsx',
                             }}
                             />
+                            <br/>
+                            <button>Todo</button>
+                            <button
+                            onClick={this.pushToDb}
+                            >Done</button>
                         </div>
                     <h2> TextFill2</h2>
 
