@@ -6,11 +6,6 @@ import styled from 'styled-components'
 // import 'codemirror/theme/monokai.css';
 import {UnControlled as CodeMirror} from 'react-codemirror2'
 
-<<<<<<< HEAD
-var code = 'const a = 0;';
-=======
->>>>>>> f3dbe2e41bbffaeede60d9b28c7b0f76706846e5
-
 var code = 'const b = 0;';
 const Styles = styled.div `
 
@@ -93,17 +88,6 @@ export default class Dashboard extends Component {
         fire.auth().signOut();
     }
 
-<<<<<<< HEAD
-    push = (text_editor) => {
-        /** Get the content of the current editor document. You can pass it an optional argument to specify the string to be used to separate lines (defaults to "\n"). */
-        text_editor.getValue();
-    }
-
-    pull = () => {
-        var text = "this is a test";
-        code = text;
-        console.log(code)
-=======
 
     push = () => {
         var txt = "Test val mcdonalds"
@@ -114,7 +98,6 @@ export default class Dashboard extends Component {
 
     pull = () => {
        console.log(this.state.normansCode)
->>>>>>> f3dbe2e41bbffaeede60d9b28c7b0f76706846e5
     }
 
 
@@ -127,20 +110,6 @@ export default class Dashboard extends Component {
                     <button
                     onClick={this.logout}
                     ><b>Logout</b></button>
-<<<<<<< HEAD
-                    <div className="dashEditor">
-                        <h3>Text Editor goes here </h3>
-                        <CodeMirror
-                        className="textEditor"
-                        value={code}
-                        options={{
-                        theme: 'monokai',
-                        keyMap: 'sublime',
-                        mode: 'jsx',
-                        }}
-                        />
-                    </div>
-=======
                         <div className="dashEditor">
                             <h3>Text Editor goes here </h3>
                             <CodeMirror
@@ -161,7 +130,6 @@ export default class Dashboard extends Component {
                             onClick={this.pushToDb}
                             >Done</button> */}
                         </div>
->>>>>>> f3dbe2e41bbffaeede60d9b28c7b0f76706846e5
                     <h2> TextFill2</h2>
 
                     <button
