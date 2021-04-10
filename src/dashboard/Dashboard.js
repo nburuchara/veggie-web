@@ -80,6 +80,16 @@ export default class Dashboard extends Component {
         fire.auth().signOut();
     }
 
+    push = () => {
+        /** Get the content of the current editor document. You can pass it an optional argument to specify the string to be used to separate lines (defaults to "\n"). */
+        getValue(seperator?: string): string;
+    }
+
+    pull = () => {
+        /** Set the content of the current editor document. */
+        setValue(content: string): void;
+    }
+
     render () {
         return(
             <Styles>
@@ -101,6 +111,14 @@ export default class Dashboard extends Component {
                             />
                         </div>
                     <h2> TextFill2</h2>
+
+                    <button
+                    onClick={this.pull}
+                    ><b>Pull</b></button>
+
+                    <button
+                    onClick={this.push}
+                    ><b>Push</b></button>
                 </div>
             </Styles>
         )
