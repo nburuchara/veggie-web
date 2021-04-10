@@ -6,6 +6,7 @@ import styled from 'styled-components'
 // import 'codemirror/theme/monokai.css';
 import {UnControlled as CodeMirror} from 'react-codemirror2'
 
+
 var code = 'const b = 0;';
 const Styles = styled.div `
 
@@ -52,6 +53,18 @@ body {
     font-family: Karla;
 }
 
+.dashEditor textarea {
+    width: 100%;
+    color: white;
+    background-color: #1C2833;
+    outline: none;
+    border: 2px solid #154360;
+    height: 500px;
+    padding-left: 50px;
+    padding-right: 50px;
+    font-family: Consolas;
+}
+
 // - - CHAT WINDOW - - //
 
 .dashChat h3 {
@@ -67,21 +80,20 @@ body {
 
 `
 
+
 export default class Dashboard extends Component {
     constructor() {
         super()
         this.state = {
             userCode: code,
             studentName: "Eric",
-            normansCode: "this is a",
-            ericsCode: ""
+            normansCode: ""
         }
     }
 
-    firebasesetvals = () => {
-        var txt = "this is a more complicated test"
-        fire.firestore().collection("newdata").doc("test text").set({
-            code: txt
+    firebaseFunction = () => {
+        fire.firestore().collection("whateverYouWant").doc("wywPart2").set({
+            code: this.state.normansCode
         })
     }
 
@@ -89,78 +101,54 @@ export default class Dashboard extends Component {
         fire.auth().signOut();
     }
 
-    push = () => {
-        // console.log(this.state.normansCode)
-        var txt = "test";
-        fire.firestore().collection("newdata").doc("test text").set({
-            code: this.state.normansCode,
-            test: txt
-        })
-        console.log(this.state.normansCode)
-    }
 
-    componentDidMount(){
-        
+    push = () => {
+        var txt = "Test val mcdonalds"
+        this.setState({
+            normansCode : txt
+        })
     }
 
     pull = () => {
-        fire.firestore().collection("newdata").doc("test text").get().then(qs => {
-            if(qs.exists){
-                console.log(qs.data().code)
-                this.setState({
-                    normansCode : qs.data().test
-                })
-            }
-            else{
-                console.log("no data found")
-            }
-        })
-        // var txt = "Test val new"
-        // this.setState({
-        //     normansCode : txt
-        // })
+       console.log(this.state.normansCode)
     }
 
-    handlechange = (e) => {
+    handleChange = (e) => {
+        var code = e.target.value
         this.setState({
-            [e.target.id] : e.target.value
+            [e.target.id]: e.target.value
         })
-        console.log(e.target.value)
-        
     }
+
 
     render () {
         
         return(
             <Styles>
                 <div className="parent">
-
                     <button
                     onClick={this.logout}
                     ><b>Logout</b></button>
                         <div className="dashEditor">
                             <h3>Text Editor goes here </h3>
-                            <CodeMirror
+                            {/* <CodeMirror
                             value={this.state.normansCode}
                             // options={options}
                             onBeforeChange={(editor, data, value) => {
-                                this.setState({
-                                    value
-                                });
+                                this.setState({value});
                             }}
                             onChange={(editor, data, value) => {
-                                console.log("anything")
                                 this.setState({
-                                    normansCode : value
+                                    normansCode: value
                                 })
                             }}
-/>
+                            /> */}
+                            <textarea
+                            id="normansCode"
+                            value={this.state.normansCode}
+                            onChange={this.handleChange}
+                            />
                             <br/>
-                            <input
-                            onChange = {this.handlechange}
-                            value = {this.state.ericsCode}
-                            id = "ericsCode"
-                            /> 
                             {/* <button>Todo</button>
                             <button
                             onClick={this.pushToDb}

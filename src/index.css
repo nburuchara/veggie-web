@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css?family=Sigmar+One');
 @import url('https://fonts.googleapis.com/css?family=Fascinate');
 @import url('https://fonts.googleapis.com/css?family=Karla');
+@import url('https://fonts.googleapis.com/css?family=Consolas');
 @import 'codemirror/lib/codemirror.css';
 @import 'codemirror/theme/material.css';
 body {
