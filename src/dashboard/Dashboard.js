@@ -6,11 +6,6 @@ import styled from 'styled-components'
 // import 'codemirror/theme/monokai.css';
 import {UnControlled as CodeMirror} from 'react-codemirror2'
 
-<<<<<<< HEAD
-var code = 'const a = 0;';
-=======
->>>>>>> f3dbe2e41bbffaeede60d9b28c7b0f76706846e5
-
 var code = 'const b = 0;';
 const Styles = styled.div `
 
@@ -72,20 +67,21 @@ body {
 
 `
 
-
 export default class Dashboard extends Component {
     constructor() {
         super()
         this.state = {
             userCode: code,
             studentName: "Eric",
-            normansCode: ""
+            normansCode: "this is a",
+            ericsCode: ""
         }
     }
 
-    firebaseFunction = () => {
-        fire.firestore().collection("whateverYouWant").doc("wywPart2").set({
-            code: this.state.normansCode
+    firebasesetvals = () => {
+        var txt = "this is a more complicated test"
+        fire.firestore().collection("newdata").doc("test text").set({
+            code: txt
         })
     }
 
@@ -93,30 +89,45 @@ export default class Dashboard extends Component {
         fire.auth().signOut();
     }
 
-<<<<<<< HEAD
-    push = (text_editor) => {
-        /** Get the content of the current editor document. You can pass it an optional argument to specify the string to be used to separate lines (defaults to "\n"). */
-        text_editor.getValue();
-    }
-
-    pull = () => {
-        var text = "this is a test";
-        code = text;
-        console.log(code)
-=======
-
     push = () => {
-        var txt = "Test val mcdonalds"
-        this.setState({
-            normansCode : txt
+        // console.log(this.state.normansCode)
+        var txt = "test";
+        fire.firestore().collection("newdata").doc("test text").set({
+            code: this.state.normansCode,
+            test: txt
         })
+        console.log(this.state.normansCode)
+    }
+
+    componentDidMount(){
+        
     }
 
     pull = () => {
-       console.log(this.state.normansCode)
->>>>>>> f3dbe2e41bbffaeede60d9b28c7b0f76706846e5
+        fire.firestore().collection("newdata").doc("test text").get().then(qs => {
+            if(qs.exists){
+                console.log(qs.data().code)
+                this.setState({
+                    normansCode : qs.data().test
+                })
+            }
+            else{
+                console.log("no data found")
+            }
+        })
+        // var txt = "Test val new"
+        // this.setState({
+        //     normansCode : txt
+        // })
     }
 
+    handlechange = (e) => {
+        this.setState({
+            [e.target.id] : e.target.value
+        })
+        console.log(e.target.value)
+        
+    }
 
     render () {
         
@@ -127,45 +138,38 @@ export default class Dashboard extends Component {
                     <button
                     onClick={this.logout}
                     ><b>Logout</b></button>
-<<<<<<< HEAD
-                    <div className="dashEditor">
-                        <h3>Text Editor goes here </h3>
-                        <CodeMirror
-                        className="textEditor"
-                        value={code}
-                        options={{
-                        theme: 'monokai',
-                        keyMap: 'sublime',
-                        mode: 'jsx',
-                        }}
-                        />
-                    </div>
-=======
                         <div className="dashEditor">
                             <h3>Text Editor goes here </h3>
                             <CodeMirror
                             value={this.state.normansCode}
                             // options={options}
                             onBeforeChange={(editor, data, value) => {
-                                this.setState({value});
+                                this.setState({
+                                    value
+                                });
                             }}
                             onChange={(editor, data, value) => {
+                                console.log("anything")
                                 this.setState({
-                                    normansCode: value
+                                    normansCode : value
                                 })
                             }}
 />
                             <br/>
+                            <input
+                            onChange = {this.handlechange}
+                            value = {this.state.ericsCode}
+                            id = "ericsCode"
+                            /> 
                             {/* <button>Todo</button>
                             <button
                             onClick={this.pushToDb}
                             >Done</button> */}
                         </div>
->>>>>>> f3dbe2e41bbffaeede60d9b28c7b0f76706846e5
                     <h2> TextFill2</h2>
 
                     <button
-                    onClick={()=> t.setValue("this is a test")}
+                    onClick={this.pull}
                     ><b>Pull</b></button>
 
                     <button
