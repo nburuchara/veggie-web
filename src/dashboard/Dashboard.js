@@ -1,12 +1,17 @@
 import React, {Component} from 'react'
 import fire from './../database/firebase'
 import styled from 'styled-components'
-import CodeMirror from '@uiw/react-codemirror';
-import 'codemirror/keymap/sublime';
-import 'codemirror/theme/monokai.css';
+// import CodeMirror from '@uiw/react-codemirror';
+// import 'codemirror/keymap/sublime';
+// import 'codemirror/theme/monokai.css';
+import {UnControlled as CodeMirror} from 'react-codemirror2'
 
+<<<<<<< HEAD
 var code = 'const a = 0;';
+=======
+>>>>>>> f3dbe2e41bbffaeede60d9b28c7b0f76706846e5
 
+var code = 'const b = 0;';
 const Styles = styled.div `
 
 body {
@@ -72,14 +77,23 @@ export default class Dashboard extends Component {
     constructor() {
         super()
         this.state = {
-            
+            userCode: code,
+            studentName: "Eric",
+            normansCode: ""
         }
+    }
+
+    firebaseFunction = () => {
+        fire.firestore().collection("whateverYouWant").doc("wywPart2").set({
+            code: this.state.normansCode
+        })
     }
 
     logout = () => {
         fire.auth().signOut();
     }
 
+<<<<<<< HEAD
     push = (text_editor) => {
         /** Get the content of the current editor document. You can pass it an optional argument to specify the string to be used to separate lines (defaults to "\n"). */
         text_editor.getValue();
@@ -89,9 +103,23 @@ export default class Dashboard extends Component {
         var text = "this is a test";
         code = text;
         console.log(code)
+=======
+
+    push = () => {
+        var txt = "Test val mcdonalds"
+        this.setState({
+            normansCode : txt
+        })
     }
 
+    pull = () => {
+       console.log(this.state.normansCode)
+>>>>>>> f3dbe2e41bbffaeede60d9b28c7b0f76706846e5
+    }
+
+
     render () {
+        
         return(
             <Styles>
                 <div className="parent">
@@ -99,6 +127,7 @@ export default class Dashboard extends Component {
                     <button
                     onClick={this.logout}
                     ><b>Logout</b></button>
+<<<<<<< HEAD
                     <div className="dashEditor">
                         <h3>Text Editor goes here </h3>
                         <CodeMirror
@@ -111,6 +140,28 @@ export default class Dashboard extends Component {
                         }}
                         />
                     </div>
+=======
+                        <div className="dashEditor">
+                            <h3>Text Editor goes here </h3>
+                            <CodeMirror
+                            value={this.state.normansCode}
+                            // options={options}
+                            onBeforeChange={(editor, data, value) => {
+                                this.setState({value});
+                            }}
+                            onChange={(editor, data, value) => {
+                                this.setState({
+                                    normansCode: value
+                                })
+                            }}
+/>
+                            <br/>
+                            {/* <button>Todo</button>
+                            <button
+                            onClick={this.pushToDb}
+                            >Done</button> */}
+                        </div>
+>>>>>>> f3dbe2e41bbffaeede60d9b28c7b0f76706846e5
                     <h2> TextFill2</h2>
 
                     <button
