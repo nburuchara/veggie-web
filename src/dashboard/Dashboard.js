@@ -5,7 +5,7 @@ import CodeMirror from '@uiw/react-codemirror';
 import 'codemirror/keymap/sublime';
 import 'codemirror/theme/monokai.css';
 
-const code = 'const a = 0;';
+var code = 'const a = 0;';
 
 const Styles = styled.div `
 
@@ -80,14 +80,15 @@ export default class Dashboard extends Component {
         fire.auth().signOut();
     }
 
-    push = () => {
+    push = (text_editor) => {
         /** Get the content of the current editor document. You can pass it an optional argument to specify the string to be used to separate lines (defaults to "\n"). */
-        getValue(seperator?: string): string;
+        text_editor.getValue();
     }
 
     pull = () => {
-        /** Set the content of the current editor document. */
-        setValue(content: string): void;
+        var text = "this is a test";
+        code = text;
+        console.log(code)
     }
 
     render () {
@@ -98,22 +99,22 @@ export default class Dashboard extends Component {
                     <button
                     onClick={this.logout}
                     ><b>Logout</b></button>
-                        <div className="dashEditor">
-                            <h3>Text Editor goes here </h3>
-                            <CodeMirror
-                            className="textEditor"
-                            value={code}
-                            options={{
-                            theme: 'monokai',
-                            keyMap: 'sublime',
-                            mode: 'jsx',
-                            }}
-                            />
-                        </div>
+                    <div className="dashEditor">
+                        <h3>Text Editor goes here </h3>
+                        <CodeMirror
+                        className="textEditor"
+                        value={code}
+                        options={{
+                        theme: 'monokai',
+                        keyMap: 'sublime',
+                        mode: 'jsx',
+                        }}
+                        />
+                    </div>
                     <h2> TextFill2</h2>
 
                     <button
-                    onClick={this.pull}
+                    onClick={()=> t.setValue("this is a test")}
                     ><b>Pull</b></button>
 
                     <button
