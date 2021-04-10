@@ -1,9 +1,11 @@
 import React, {Component} from 'react'
 import fire from './../database/firebase'
 import styled from 'styled-components'
-import CodeMirror from '@uiw/react-codemirror';
-import 'codemirror/keymap/sublime';
-import 'codemirror/theme/monokai.css';
+// import CodeMirror from '@uiw/react-codemirror';
+// import 'codemirror/keymap/sublime';
+// import 'codemirror/theme/monokai.css';
+import {UnControlled as CodeMirror} from 'react-codemirror2'
+
 
 var code = 'const b = 0;';
 const Styles = styled.div `
@@ -72,8 +74,15 @@ export default class Dashboard extends Component {
         super()
         this.state = {
             userCode: code,
-            studentName: "Eric"
+            studentName: "Eric",
+            normansCode: ""
         }
+    }
+
+    firebaseFunction = () => {
+        fire.firestore().collection("whateverYouWant").doc("wywPart2").set({
+            code: this.state.normansCode
+        })
     }
 
     logout = () => {
@@ -82,20 +91,19 @@ export default class Dashboard extends Component {
 
 
     push = () => {
-        /** Get the content of the current editor document. You can pass it an optional argument to specify the string to be used to separate lines (defaults to "\n"). */
-        getValue(seperator?: string): string;
+        var txt = "Test val mcdonalds"
+        this.setState({
+            normansCode : txt
+        })
     }
 
     pull = () => {
-        /** Set the content of the current editor document. */
-        setValue(content: string): void;
+       console.log(this.state.normansCode)
     }
 
 
     render () {
-
         
-
         return(
             <Styles>
                 <div className="parent">
@@ -106,19 +114,22 @@ export default class Dashboard extends Component {
                         <div className="dashEditor">
                             <h3>Text Editor goes here </h3>
                             <CodeMirror
-                            className="textEditor"
-                            value={code}
-                            options={{
-                            theme: 'monokai',
-                            keyMap: 'sublime',
-                            mode: 'jsx',
+                            value={this.state.normansCode}
+                            // options={options}
+                            onBeforeChange={(editor, data, value) => {
+                                this.setState({value});
                             }}
-                            />
+                            onChange={(editor, data, value) => {
+                                this.setState({
+                                    normansCode: value
+                                })
+                            }}
+/>
                             <br/>
-                            <button>Todo</button>
+                            {/* <button>Todo</button>
                             <button
                             onClick={this.pushToDb}
-                            >Done</button>
+                            >Done</button> */}
                         </div>
                     <h2> TextFill2</h2>
 
