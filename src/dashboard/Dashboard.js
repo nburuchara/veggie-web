@@ -5,8 +5,7 @@ import CodeMirror from '@uiw/react-codemirror';
 import 'codemirror/keymap/sublime';
 import 'codemirror/theme/monokai.css';
 
-const code = 'const a = 0;';
-
+var code = 'const b = 0;';
 const Styles = styled.div `
 
 body {
@@ -72,7 +71,8 @@ export default class Dashboard extends Component {
     constructor() {
         super()
         this.state = {
-            
+            userCode: code,
+            studentName: "Eric"
         }
     }
 
@@ -80,7 +80,25 @@ export default class Dashboard extends Component {
         fire.auth().signOut();
     }
 
+    someFunction = () => {
+        code+= `
+        
+        
+        `
+    }
+
+    pushToDb = () => {
+        fire.firestore().collection("userCode").doc(this.state.studentName)
+        .set({
+            code: this.state.userCode
+        })
+    }
+
+    
     render () {
+
+        
+
         return(
             <Styles>
                 <div className="parent">
@@ -99,6 +117,11 @@ export default class Dashboard extends Component {
                             mode: 'jsx',
                             }}
                             />
+                            <br/>
+                            <button>Todo</button>
+                            <button
+                            onClick={this.pushToDb}
+                            >Done</button>
                         </div>
                     <h2> TextFill2</h2>
                 </div>
