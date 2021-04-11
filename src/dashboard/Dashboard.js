@@ -101,6 +101,9 @@ export default class Dashboard extends Component {
             userCode: code,
             studentName: "Eric",
             normansCode: "",
+            veggieFuncBgPrsd: "#F39C12",
+            veggieFuncTxtPrsd: "white",
+            toDoPressed : false,
             todo: ` /* \n OPTIONAL: \n in progress = ⏳ \n completed = ✅ \n \n ✍🏾 - - TODO - - ✍🏾
             \n 🥕 Task 1 \n 🥕 Task 2 \n 🥕 Task 3 \n */
             `
@@ -111,9 +114,19 @@ export default class Dashboard extends Component {
         /* - - VEGGIE FUNCTIONS - - */
         
     addTodo = () => {
-        this.setState({
-            normansCode: this.state.todo
-        })
+        if (this.state.toDoPressed == false) {
+            this.setState({
+                normansCode: this.state.todo,
+                veggieFuncBgPrsd: "#1C2833",
+                toDoPressed: true
+            })
+        } else {
+            this.setState({
+                normansCode: this.state.todo,
+                // veggieFuncBgPrsd: "#F39C12",
+                toDoPressed: false
+            })
+        }
     }
 
     firebaseFunction = () => {
@@ -153,6 +166,19 @@ export default class Dashboard extends Component {
 
 
     render () {
+
+        let todoBtnStyle = {
+            marginLeft: "25px",
+            marginTop: "20px",
+            borderRadius: "8px",
+            height: "40px",
+            backgroundColor: this.state.veggieFuncBgPrsd,
+            fontFamily: "Karla",
+            border: "0.5px solid #F39C12",
+            color: this.state.veggieFuncTxtPrsd,
+            marginBottom: "20px",
+            marginRight: "45px"
+        }
         
         return(
             <Styles>
@@ -162,6 +188,7 @@ export default class Dashboard extends Component {
                     ><b>Logout</b></button>
                     <div className="veggieFunctions">
                         <button
+                        style={todoBtnStyle}
                         onClick={this.addTodo}
                         ><b>✍🏾 TODO</b></button>
                         <button
