@@ -91,26 +91,26 @@ export default class Dashboard extends Component {
         }
     }
 
-    firebaseFunction = () => {
-        fire.firestore().collection("whateverYouWant").doc("wywPart2").set({
-            code: this.state.normansCode
-        })
-    }
-
     logout = () => {
         fire.auth().signOut();
     }
 
 
     push = () => {
-        var txt = "Test val mcdonalds"
-        this.setState({
-            normansCode : txt
+        fire.firestore().collection("TextEditor").doc("currpage").set({
+            code : this.state.normansCode
         })
+        console.log(this.state.normansCode)
     }
 
     pull = () => {
-       console.log(this.state.normansCode)
+        fire.firestore().collection("TextEditor").doc("currpage").get()
+        .then(qs => {
+            this.setState({
+                normansCode : qs.data().code
+            })
+        })
+        console.log(this.state.normansCode)
     }
 
     handleChange = (e) => {
