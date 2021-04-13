@@ -118,6 +118,7 @@ export default class Dashboard extends Component {
         super()
         this.state = {
             userCode: code,
+
             userEmail: "",
             userGroup: [],
 
@@ -203,9 +204,11 @@ export default class Dashboard extends Component {
       }
     
 
+
         /* - - VEGGIE FUNCTIONS - - */
         
     addTodo = () => {
+
         if (this.state.todoPressed == false) {
             this.setState({
                 todoCode: this.state.todo,
@@ -226,6 +229,7 @@ export default class Dashboard extends Component {
             })
         } else {
             this.pull()
+
         }
     }
 
@@ -256,6 +260,7 @@ export default class Dashboard extends Component {
             this.pull()
         }
     }
+
 
     addScribble = () => {
         if (this.state.scribPressed == false) {
@@ -318,6 +323,7 @@ export default class Dashboard extends Component {
                 usrMsgColor: "#93FE3A"
             })
         }
+
     }
 
     pushBug = () => {
@@ -368,6 +374,7 @@ export default class Dashboard extends Component {
 
 
     pull = () => {
+
        if (this.state.todoPressed == true) {
           this.pullTodo()
        } else if (this.state.bugPressed == true) {
@@ -426,6 +433,7 @@ export default class Dashboard extends Component {
                console.log("dosesn't exist")
            }
        })
+
     }
 
     handleChange = (e) => {
@@ -452,6 +460,7 @@ export default class Dashboard extends Component {
 
 
     render () {
+
 
         let usrMsgStyle = {
             marginLeft: "57.5px",
@@ -486,14 +495,17 @@ export default class Dashboard extends Component {
         }
 
         let scribBtnStyle = {
+
             marginLeft: "25px",
             marginTop: "20px",
             borderRadius: "8px",
             height: "40px",
+
             backgroundColor: this.state.scribBtnBg,
             fontFamily: "Karla",
             border: "0.5px solid #F39C12",
             color: this.state.scribBtnTxt,
+
             marginBottom: "20px",
             marginRight: "45px"
         }
