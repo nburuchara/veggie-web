@@ -155,7 +155,17 @@ export default class Dashboard extends Component {
             scribUsrMsg: "",
             scrib: ` \n 📝 - - SCRIBBLE - - 📝 \n \n 🥑 Brainstorming... \n 🥑 Thinking... \n 🥑 Planning...`,
 
-                //* - - FEATURE - - //
+            //* - - GANTT - - //
+            ganttCmpnt: false,
+            ganttCode: "",
+            ganttBtnBg: "#F39C12",
+            ganttBtnTxt: "white",
+            ganttPressed: false,
+            ganttUsrMsg: "",
+            gantt: `not done`,
+
+
+            //* - - FEATURE - - //
             ftrCmpnt: false,
             ftrCode: "",
             ftrBtnBg: "",
@@ -224,6 +234,10 @@ export default class Dashboard extends Component {
                 scribBtnBg: "#F39C12",
                 ftrCmpnt: false,
                 ftrPressed: false,
+                ganttCmpnt: false,
+                ganttBtnBg: "#F39C12",
+                ganttBtnTxt: "white",
+                ganttPressed: false,
                 todoUsrMsg: "Press the \"Pull\" button (or press \"TODO\" again) to retreive your most recent changes",
                 usrMsgColor: "white"
             })
@@ -253,6 +267,11 @@ export default class Dashboard extends Component {
                 scribBtnTxt: "white",
                 scribPressed: false,
 
+                ganttCmpnt: false,
+                ganttBtnBg: "#F39C12",
+                ganttBtnTxt: "white",
+                ganttPressed: false,
+
                 ftrCmpnt: false,
                 ftrPressed: false
             })
@@ -279,11 +298,48 @@ export default class Dashboard extends Component {
                 bugBtnBg: "#F39C12",
                 bugBtnTxt: "white",
                 bugPressed: false,
+                ganttCmpnt: false,
+                ganttBtnBg: "#F39C12",
+                ganttBtnTxt: "white",
+                ganttPressed: false,
                 ftrCmpnt: false,
                 ftrPressed: false
             })
         } else {
 
+        }
+    }
+
+    addGantt = () => {
+        if (this.state.bugPressed == false) {
+            this.setState({
+                ganttCode: this.state.bug,
+                ganttBtnBg: "#3498DB",
+                ganttCmpnt: true,
+                ganttPressed: true,
+                usrMsgColor: "white",
+                ganttUsrMsg: "Press the \"Pull\" button (or press \"BUGS\" again) to retreive your most recent changes",
+                
+                toDoCmpnt: false,
+                todoBtnBg: "#F39C12",
+                todoBtnTxt: "white",
+                todoPressed: false,
+
+                scribCmpnt: false,
+                scribBtnBg: "#F39C12",
+                scribBtnTxt: "white",
+                scribPressed: false,
+
+                bugCmpnt: false,
+                bugBtnBg: "#F39C12",
+                bugBtnTxt: "white",
+                bugPressed: false,
+
+                ftrCmpnt: false,
+                ftrPressed: false
+            })
+        } else {
+            this.pull()
         }
     }
 
@@ -300,6 +356,9 @@ export default class Dashboard extends Component {
             this.pushBug()
         } else if (this.state.scribPressed == true) {
             this.pushScrib()
+        }
+        else if (this.state.ganttPressed == true) {
+            this.pushGantt()
         }
     }
 
@@ -371,6 +430,29 @@ export default class Dashboard extends Component {
         }
     }
 
+    pushGantt = () => {
+        if (this.state.ganttCode == this.state.gantt) {
+            this.setState({
+                ganttUsrMsg: "⚠️ You're about to overwrite your saved code with the BUGS boilerplate. Press \"Pull\" to get the latest changes or make some changes below.",
+                usrMsgColor: "#FF311D"
+            })
+        } else if (this.state.ganttCode == "") {
+            this.setState({
+                ganttUsrMsg: "⚠️ No changes detected to push. Press \"Pull\" to get the latest changes.",
+                usrMsgColor: "#FF311D"
+            })
+        } else {
+            fire.firestore().collection("TextEditor").doc("currGantt").set({
+                code: this.state.ganttCode
+            })
+            this.setState({
+                ganttUsrMsg: "✅ Your changes has been saved.",
+                usrMsgColor: "#93FE3A"
+            })
+        }
+
+    }
+
 
 
     pull = () => {
@@ -381,6 +463,9 @@ export default class Dashboard extends Component {
            this.pullBug()
        } else if (this.state.scribPressed == true) {
            this.pullScrib()
+       }
+       else if (this.state.ganttPressed == true) {
+        this.pullGantt()
        }
     }
 
@@ -436,6 +521,24 @@ export default class Dashboard extends Component {
 
     }
 
+    pullGantt = () => {
+        fire.firestore().collection("TextEditor").doc("currGantt").get()
+        .then(querySnapshot => {
+           if (querySnapshot.exists){
+               this.setState({
+                   ganttCode: querySnapshot.data().code
+               }) 
+               this.setState({
+                   ganttUsrMsg: "🔅 The latest changes have been loaded.",
+                   usrMsgColor: "#F99D19"
+               })
+           } else {
+               console.log("dosesn't exist")
+           }
+       })
+
+    }
+
     handleChange = (e) => {
         if (this.state.todoPressed == true) {
             this.setState({
@@ -453,6 +556,12 @@ export default class Dashboard extends Component {
             this.setState({
                 [e.target.id]: e.target.value,
                 scribUsrMsg: "⚠️ Changes have been made. Press \"Push\" to save your changes, otherwise they may be lost.",
+                usrMsgColor: "#FF311D"
+            })
+        }else if (this.state.ganttPressed == true) {
+            this.setState({
+                [e.target.id]: e.target.value,
+                ganttUsrMsg: "⚠️ Changes have been made. Press \"Push\" to save your changes, otherwise they may be lost.",
                 usrMsgColor: "#FF311D"
             })
         }
@@ -510,6 +619,22 @@ export default class Dashboard extends Component {
             marginRight: "45px"
         }
         
+        let ganttBtnStyle = {
+
+            marginLeft: "25px",
+            marginTop: "20px",
+            borderRadius: "8px",
+            height: "40px",
+
+            backgroundColor: this.state.ganttBtnBg,
+            fontFamily: "Karla",
+            border: "0.5px solid #F39C12",
+            color: this.state.ganttBtnTxt,
+
+            marginBottom: "20px",
+            marginRight: "45px"
+        }
+
         return(
             <Styles>
                 <div className="parent">
@@ -532,6 +657,10 @@ export default class Dashboard extends Component {
                         style={scribBtnStyle}
                         onClick={this.addScribble}
                         ><b>📝 SCRIBBLE</b></button>
+                        <button
+                        style={ganttBtnStyle}
+                        onClick={this.addGantt}
+                        ><b>📝 Gantt</b></button>
                     </div>
                     {this.state.toDoCmpnt && 
                         <div className="dashEditor">
@@ -569,6 +698,22 @@ export default class Dashboard extends Component {
                             <textarea
                             id="scribCode"
                             value={this.state.scribCode}
+                            onChange={this.handleChange}
+                            />
+                            <br/>
+                            {/* <button>Todo</button>
+                            <button
+                            onClick={this.pushToDb}
+                            >Done</button> */}
+                        </div>
+                    }
+
+                    {this.state.ganttCmpnt && 
+                        <div className="dashEditor">
+                            <p style={usrMsgStyle}><b>{this.state.ganttUsrMsg}</b></p>
+                            <textarea
+                            id="ganttCode"
+                            value={this.state.ganttCode}
                             onChange={this.handleChange}
                             />
                             <br/>
