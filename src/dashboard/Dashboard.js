@@ -164,6 +164,15 @@ export default class Dashboard extends Component {
             ganttUsrMsg: "",
             gantt: `not done`,
 
+            //* - - FEATURES - - //
+            featuresCmpnt: false,
+            featuresCode: "",
+            featuresBtnBg: "#F39C12",
+            featuresBtnTxt: "white",
+            featuresPressed: false,
+            featuresUsrMsg: "",
+            features: `not done`,
+
 
             //* - - FEATURE - - //
             ftrCmpnt: false,
@@ -238,6 +247,10 @@ export default class Dashboard extends Component {
                 ganttBtnBg: "#F39C12",
                 ganttBtnTxt: "white",
                 ganttPressed: false,
+                featuresCmpnt: false,
+                featuresBtnBg: "#F39C12",
+                featuresBtnTxt: "white",
+                featuresPressed: false,
                 todoUsrMsg: "Press the \"Pull\" button (or press \"TODO\" again) to retreive your most recent changes",
                 usrMsgColor: "white"
             })
@@ -272,6 +285,11 @@ export default class Dashboard extends Component {
                 ganttBtnTxt: "white",
                 ganttPressed: false,
 
+                featuresCmpnt: false,
+                featuresBtnBg: "#F39C12",
+                featuresBtnTxt: "white",
+                featuresPressed: false,
+
                 ftrCmpnt: false,
                 ftrPressed: false
             })
@@ -302,6 +320,10 @@ export default class Dashboard extends Component {
                 ganttBtnBg: "#F39C12",
                 ganttBtnTxt: "white",
                 ganttPressed: false,
+                featuresCmpnt: false,
+                featuresBtnBg: "#F39C12",
+                featuresBtnTxt: "white",
+                featuresPressed: false,
                 ftrCmpnt: false,
                 ftrPressed: false
             })
@@ -311,14 +333,14 @@ export default class Dashboard extends Component {
     }
 
     addGantt = () => {
-        if (this.state.bugPressed == false) {
+        if (this.state.ganttPressed == false) {
             this.setState({
-                ganttCode: this.state.bug,
+                ganttCode: this.state.gantt,
                 ganttBtnBg: "#3498DB",
                 ganttCmpnt: true,
                 ganttPressed: true,
                 usrMsgColor: "white",
-                ganttUsrMsg: "Press the \"Pull\" button (or press \"BUGS\" again) to retreive your most recent changes",
+                ganttUsrMsg: "Press the \"Pull\" button (or press \"GANTT\" again) to retreive your most recent changes",
                 
                 toDoCmpnt: false,
                 todoBtnBg: "#F39C12",
@@ -334,6 +356,49 @@ export default class Dashboard extends Component {
                 bugBtnBg: "#F39C12",
                 bugBtnTxt: "white",
                 bugPressed: false,
+
+                featuresCmpnt: false,
+                featuresBtnBg: "#F39C12",
+                featuresBtnTxt: "white",
+                featuresPressed: false,
+
+                ftrCmpnt: false,
+                ftrPressed: false
+            })
+        } else {
+            this.pull()
+        }
+    }
+
+    addFeatures = () => {
+        if (this.state.featuresPressed == false) {
+            this.setState({
+                featuresCode: this.state.features,
+                featuresBtnBg: "#3498DB",
+                featuresCmpnt: true,
+                featuresPressed: true,
+                usrMsgColor: "white",
+                featuresUsrMsg: "Press the \"Pull\" button (or press \"FEATURES\" again) to retreive your most recent changes",
+                
+                toDoCmpnt: false,
+                todoBtnBg: "#F39C12",
+                todoBtnTxt: "white",
+                todoPressed: false,
+
+                scribCmpnt: false,
+                scribBtnBg: "#F39C12",
+                scribBtnTxt: "white",
+                scribPressed: false,
+
+                bugCmpnt: false,
+                bugBtnBg: "#F39C12",
+                bugBtnTxt: "white",
+                bugPressed: false,
+
+                ganttCmpnt: false,
+                ganttBtnBg: "#F39C12",
+                ganttBtnTxt: "white",
+                ganttPressed: false,
 
                 ftrCmpnt: false,
                 ftrPressed: false
@@ -359,6 +424,9 @@ export default class Dashboard extends Component {
         }
         else if (this.state.ganttPressed == true) {
             this.pushGantt()
+        }
+        else if (this.state.featuresPressed == true) {
+            this.pushFeatures()
         }
     }
 
@@ -453,6 +521,28 @@ export default class Dashboard extends Component {
 
     }
 
+    pushFeatures = () => {
+        if (this.state.featuresCode == this.state.features) {
+            this.setState({
+                featuresUsrMsg: "⚠️ You're about to overwrite your saved code with the BUGS boilerplate. Press \"Pull\" to get the latest changes or make some changes below.",
+                usrMsgColor: "#FF311D"
+            })
+        } else if (this.state.featuresCode == "") {
+            this.setState({
+                featuresUsrMsg: "⚠️ No changes detected to push. Press \"Pull\" to get the latest changes.",
+                usrMsgColor: "#FF311D"
+            })
+        } else {
+            fire.firestore().collection("TextEditor").doc("currFeatures").set({
+                code: this.state.featuresCode
+            })
+            this.setState({
+                featuresUsrMsg: "✅ Your changes has been saved.",
+                usrMsgColor: "#93FE3A"
+            })
+        }
+
+    }
 
 
     pull = () => {
@@ -465,8 +555,11 @@ export default class Dashboard extends Component {
            this.pullScrib()
        }
        else if (this.state.ganttPressed == true) {
-        this.pullGantt()
+           this.pullGantt()
        }
+       else if (this.state.featuresPressed == true) {
+           this.pullFeatures()
+        }
     }
 
     pullTodo = () => {
@@ -539,6 +632,24 @@ export default class Dashboard extends Component {
 
     }
 
+    pullFeatures = () => {
+        fire.firestore().collection("TextEditor").doc("currFeatures").get()
+        .then(querySnapshot => {
+           if (querySnapshot.exists){
+               this.setState({
+                   featuresCode: querySnapshot.data().code
+               }) 
+               this.setState({
+                   featuresUsrMsg: "🔅 The latest changes have been loaded.",
+                   usrMsgColor: "#F99D19"
+               })
+           } else {
+               console.log("dosesn't exist")
+           }
+       })
+
+    }
+
     handleChange = (e) => {
         if (this.state.todoPressed == true) {
             this.setState({
@@ -562,6 +673,13 @@ export default class Dashboard extends Component {
             this.setState({
                 [e.target.id]: e.target.value,
                 ganttUsrMsg: "⚠️ Changes have been made. Press \"Push\" to save your changes, otherwise they may be lost.",
+                usrMsgColor: "#FF311D"
+            })
+        }
+        else if (this.state.featuresPressed == true) {
+            this.setState({
+                [e.target.id]: e.target.value,
+                featuresUsrMsg: "⚠️ Changes have been made. Press \"Push\" to save your changes, otherwise they may be lost.",
                 usrMsgColor: "#FF311D"
             })
         }
@@ -635,6 +753,22 @@ export default class Dashboard extends Component {
             marginRight: "45px"
         }
 
+        let featuresBtnStyle = {
+
+            marginLeft: "25px",
+            marginTop: "20px",
+            borderRadius: "8px",
+            height: "40px",
+
+            backgroundColor: this.state.featuresBtnBg,
+            fontFamily: "Karla",
+            border: "0.5px solid #F39C12",
+            color: this.state.featuresBtnTxt,
+
+            marginBottom: "20px",
+            marginRight: "45px"
+        }
+
         return(
             <Styles>
                 <div className="parent">
@@ -660,7 +794,11 @@ export default class Dashboard extends Component {
                         <button
                         style={ganttBtnStyle}
                         onClick={this.addGantt}
-                        ><b>📝 Gantt</b></button>
+                        ><b>⏰ GANTT</b></button>
+                        <button
+                        style={featuresBtnStyle}
+                        onClick={this.addFeatures}
+                        ><b>⭐ FEATURES</b></button>
                     </div>
                     {this.state.toDoCmpnt && 
                         <div className="dashEditor">
@@ -707,13 +845,27 @@ export default class Dashboard extends Component {
                             >Done</button> */}
                         </div>
                     }
-
                     {this.state.ganttCmpnt && 
                         <div className="dashEditor">
                             <p style={usrMsgStyle}><b>{this.state.ganttUsrMsg}</b></p>
                             <textarea
                             id="ganttCode"
                             value={this.state.ganttCode}
+                            onChange={this.handleChange}
+                            />
+                            <br/>
+                            {/* <button>Todo</button>
+                            <button
+                            onClick={this.pushToDb}
+                            >Done</button> */}
+                        </div>
+                    }
+                    {this.state.featuresCmpnt && 
+                        <div className="dashEditor">
+                            <p style={usrMsgStyle}><b>{this.state.featuresUsrMsg}</b></p>
+                            <textarea
+                            id="featuresCode"
+                            value={this.state.featuresCode}
                             onChange={this.handleChange}
                             />
                             <br/>
