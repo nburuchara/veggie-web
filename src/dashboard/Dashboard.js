@@ -52,6 +52,13 @@ body {
     margin-left: 62.5px;
     color: white;
     font-family: Consolas;
+    margin-bottom: 0px;
+}
+
+.uEmail button {
+    margin-top: 0px;
+    height: 35px;
+    margin-left: 62.5px;
 }
     // - - VEGGIE FUNCTIONS - - //
 
@@ -162,7 +169,8 @@ export default class Dashboard extends Component {
             ganttBtnTxt: "white",
             ganttPressed: false,
             ganttUsrMsg: "",
-            gantt: `not done`,
+            gantt: `\n ⏰ - - GANTT CHART - - ⏰ \n \n Project Task:			Days: 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 \n            Task1				  # # # ## ## \n     Task2				            # # ## ## ##          ## ## ## ##       ## ## \n            Task3				           ## ##       ## ## ##                ## ##          ## ## \n     Task4				          # # # ##
+            Task5				    # # ##          ## ## ## ##                            ## ## ## ## ## `,
 
             //* - - FEATURES - - //
             featuresCmpnt: false,
@@ -171,7 +179,9 @@ export default class Dashboard extends Component {
             featuresBtnTxt: "white",
             featuresPressed: false,
             featuresUsrMsg: "",
-            features: ` \n ⭐ FEATURE: " YOUR NEXT BIG FEATURE "`,
+
+            features: `\n ⭐ FEATURE: " YOUR NEXT BIG FEATURE "`,
+
 
 
             //* - - FEATURE - - //
@@ -181,7 +191,7 @@ export default class Dashboard extends Component {
             ftrBtnTxt: "",
             ftrPressed: false,
             ftrUsrMsg: "",
-            ftr: `⭐ FEATURE: " YOUR NEXT BIG FEATURE "`
+            ftr: ``
 
                 //* - - CHART - - //
 
@@ -196,7 +206,10 @@ export default class Dashboard extends Component {
             if (user) {
               this.setState({
                   userEmail: user.email
-            })
+              })
+                //* - - LOAD ALL STATES OF CHECK OUT - - //
+
+                // fire.firestore().collection()
             } else {
               this.setState({user:null})
             }
@@ -777,6 +790,9 @@ export default class Dashboard extends Component {
                     ><b>Logout</b></button>
                     <div className="uEmail">
                         <h4>User: {this.state.userEmail}</h4>
+                        <br/>
+                        <button
+                        ><b>Checkout Document</b></button>
                     </div>
                     <div className="veggieFunctions">
                         <button
