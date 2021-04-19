@@ -171,7 +171,7 @@ export default class Dashboard extends Component {
             featuresBtnTxt: "white",
             featuresPressed: false,
             featuresUsrMsg: "",
-            features: `not done`,
+            features: ` \n ⭐ FEATURE: " YOUR NEXT BIG FEATURE "`,
 
 
             //* - - FEATURE - - //
