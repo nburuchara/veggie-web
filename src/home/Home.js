@@ -113,7 +113,7 @@ const Styles = styled.div `
 
 .signUp button {
     margin-top: 15px;
-    margin-bottom: 95px;
+    margin-bottom: 15px;
     height: 45px;
     width: 100px;
     border-radius: 8px;
@@ -126,6 +126,33 @@ const Styles = styled.div `
 
 .fullName {
     text-align: center;
+}
+
+// - - backButton - - //
+
+.backButton button {
+    margin-top: 15px;
+    margin-bottom: 15px;
+    height: 45px;
+    width: 150px !important;
+    border-radius: 8px;
+    outline: none;
+    background-color: #F39C12;
+    color: white;
+    font-family: Karla;
+    border: 2px solid #F39C12;
+}
+.backButton2 button {
+    margin-top: 15px;
+    margin-bottom: 350px !important;
+    height: 45px;
+    width: 150px !important;
+    border-radius: 8px;
+    outline: none;
+    background-color: #F39C12;
+    color: white;
+    font-family: Karla;
+    border: 2px solid #F39C12;
 }
 
     // - - GROUP INFO - - //
@@ -172,7 +199,7 @@ const Styles = styled.div `
 
 .groupInfo button {
     margin-top: 15px;
-    margin-bottom: 390px;
+    margin-bottom: 15px;
     height: 45px;
     width: 100px;
     border-radius: 8px;
@@ -191,10 +218,10 @@ export default class Home extends Component {
         super()
         this.state = {
             user: null,
-            showLogin : true,
+            showLogin : false,
             showSignup: false,
             showVerify: false,
-            showGroupInfo: false,
+            showGroupInfo: true,
             loginErrorMsg: "",
             name: "",
             email: "",
@@ -230,6 +257,14 @@ export default class Home extends Component {
         this.setState({
             showLogin: false, 
             showSignup: true
+        })
+    }
+
+    goBack = () => {
+        this.setState({
+            showLogin: true, 
+            showSignup: false,
+            showGroupInfo: false
         })
     }
 
@@ -371,6 +406,12 @@ export default class Home extends Component {
                         <button
                         onClick={this.getGroupInfo}
                         ><b>Continue</b></button>
+                        <div
+                        className = "backButton">
+                        <button
+                        onClick={this.goBack}
+                        ><b>Back to Login</b></button>
+                        </div>
                     </div>
                 }
                 {this.state.showGroupInfo && 
@@ -395,6 +436,12 @@ export default class Home extends Component {
                         <button
                         onClick={this.signUp}
                         ><b>Finish</b></button>
+                        <div
+                        className = "backButton2">
+                        <button
+                        onClick={this.goBack}
+                        ><b>Back to Login</b></button>
+                        </div>
                     </div>
                 }
             </Styles>
