@@ -157,6 +157,8 @@ export default class Dashboard extends Component {
             userSection: "",
             userGroup: "",
             userEmail: "",
+            teamA: [],
+            teamB: [],
 
                 //* - - USR MSG STYLE - - //
             usrMsgColor: "white",
@@ -288,6 +290,17 @@ export default class Dashboard extends Component {
                     console.log(`GROUP: ${this.state.userGroup}`)
                     console.log(`EMAIL: ${this.state.userEmail}`)
                 })
+
+                fire.firestore().collection("CS251A").doc("members")
+                .get().then(querySnapshot => {
+                    if (querySnapshot.exists) {
+                        this.state.teamA.push(querySnapshot.data())
+                    }
+                    if (this.state.teamA.includes(user.email)) {
+
+                    }
+                })
+                console.log(`USERNAME: ${this.state.userGroup}`)
                 // console.log(currentUser)
               this.setState({
                   userEmail: user.email,
@@ -886,9 +899,9 @@ export default class Dashboard extends Component {
                         <h4><b>USER:</b> {this.state.userEmail}</h4>
                         <h6><b>TEAM:</b> {this.state.userGroup}</h6>
                         <br/>
-                        <button
+                        {/* <button
                         onClick={this.checkoutDocument}
-                        ><b>Checkout Document</b></button>
+                        ><b>Checkout Document</b></button> */}
                     </div>
                     <div className="veggieFunctions">
                         <button

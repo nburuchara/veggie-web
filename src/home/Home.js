@@ -188,6 +188,12 @@ const Styles = styled.div `
     
 }
 
+.groupInfo h5 {
+    font-size: 15px;
+    color: #F39C12;
+    font-family: Karla;
+}
+
 .groupInfo p {
     color: white;
     font-family: Karla;
@@ -225,10 +231,10 @@ export default class Home extends Component {
         super()
         this.state = {
             user: null,
-            showLogin : false,
+            showLogin : true,
             showSignup: false,
             showVerify: false,
-            showGroupInfo: true,
+            showGroupInfo: false,
             loginErrorMsg: "",
             name: "",
             email: "",
@@ -432,6 +438,7 @@ export default class Home extends Component {
                         <h2>SpaceFill2</h2>
                         <h1>You're almost all set up!</h1>
                         <h4>Group Name</h4>
+                        <h5>(Name of your group)</h5>
                         <input
                         id="group"
                         value={this.state.group}
@@ -439,6 +446,7 @@ export default class Home extends Component {
                         className="fullName"
                         />
                         <h4 className = "second_input">Project Name</h4>
+                        <h5>(Name of your project)</h5>
                         <input
                         id="project"
                         value={this.state.project}
