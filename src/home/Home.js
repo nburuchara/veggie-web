@@ -109,6 +109,13 @@ const Styles = styled.div `
     color: white;
     font-family: Karla;
     font-size: 20px;
+    
+}
+
+.signUp h5 {
+    font-size: 15px;
+    color: #F39C12;
+    font-family: Karla;
 }
 
 .signUp button {
@@ -275,11 +282,14 @@ export default class Home extends Component {
     }
 
     saveUserData = () => {
+        this.state.name = this.state.name.toUpperCase()
+        this.state.class = this.state.class.toUpperCase()
+        this.state.project = this.state.project.toUpperCase()
+        this.state.group = this.state.group.toUpperCase()
         fire.firestore().collection("userData").add({
             name: this.state.name,
             email: this.state.email,
-            password: this.state.password,
-            class: this.state.class,
+            section: this.state.class,
             group: this.state.group,
             project: this.state.project
         })
@@ -344,7 +354,9 @@ export default class Home extends Component {
                         value={this.state.email}
                         onChange={this.handleChange}
                         />
-                        <h4>Class</h4>
+                        <h4>Class Section</h4>
+                        <h5>CS251A (Prof. Rab)</h5>
+                        <h5>CS251B (Prof. Olaf</h5>
                         <input
                         id="class"
                         value={this.state.class}
@@ -352,6 +364,7 @@ export default class Home extends Component {
                         onChange={this.handleChange}
                         />
                         <h4>Password</h4>
+                        <h5>(Must be at least 6 characters)</h5>
                         <input
                         id="password"
                         value={this.state.password}

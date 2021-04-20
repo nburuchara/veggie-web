@@ -6,6 +6,7 @@ import styled from 'styled-components'
 // import 'codemirror/theme/monokai.css';
 import {UnControlled as CodeMirror} from 'react-codemirror2'
 import { getAllByTestId } from '@testing-library/dom';
+import { findRenderedComponentWithType } from 'react-dom/test-utils';
 
 
 var code = 'const b = 0;';
@@ -41,6 +42,22 @@ body {
     font-size: 18px;
 }
 
+.parent label {
+    font-family: Karla;
+    color: #F39C12;
+    
+}
+
+    // - - PROJECT TITLE - - //
+
+.projectTitle h1 {
+    text-align: center;
+    marign-bottom: 7.5px;
+    margin-top: 5px;
+    font-family: Karla;
+    color: #F39C12;
+}
+
 
     // - - USER EMAIL - - //
 
@@ -53,6 +70,14 @@ body {
     color: white;
     font-family: Consolas;
     margin-bottom: 0px;
+}
+
+.uEmail h6 {
+    margin-top: 10px;
+    margin-left: 62.5px;
+    font-size: 16px;
+    font-family: Karla;
+    color: #F39C12;
 }
 
 .uEmail button {
@@ -125,9 +150,13 @@ export default class Dashboard extends Component {
         super()
         this.state = {
             userCode: code,
-
             userEmail: "",
             userGroup: [],
+            userProject: "",
+            userName: "",
+            userSection: "",
+            userGroup: "",
+            userEmail: "",
 
                 //* - - USR MSG STYLE - - //
             usrMsgColor: "white",
@@ -202,9 +231,66 @@ export default class Dashboard extends Component {
     componentDidMount = () => {
         fire.auth().onAuthStateChanged((user) => {
             if (user) {
+                class User {
+                    constructor(name, section, email, group, project) {
+                        this.name = name
+                        this.section = section
+                        this.email = email
+                        this.group = group
+                        this.project = project
+                    }
+                    toString () {
+                        return this.name + ', ' +
+                        this.section + ', ' +
+                        this.email + ', ' + 
+                        this.group + ', ' +
+                        this.project
+                    }
+                }
+                var userConverter = {
+                    toFirestore : function(user) {
+                        return {
+                            name: user.name,
+                            section: user.section,
+                            email: user.email,
+                            group: user.group,
+                            project: user.project
+                        }
+                    },
+                    fromFirestore : function (snapshot, options) {
+                        const data = snapshot.data(options)
+                        return new User(data.name, data.section,
+                            data.email, data.group,
+                            data.project)
+                    }
+                }
+                fire.firestore().collection("userData")
+                .withConverter(userConverter).where('email', '==', user.email).get().then(qs => {
+                    const project = qs.docs.map(doc => doc.data().project)
+                    const name = qs.docs.map(doc => doc.data().name)
+                    const section = qs.docs.map(doc => doc.data().section)
+                    const group = qs.docs.map(doc => doc.data().group)
+                    const email = qs.docs.map(doc => doc.data().email)
+                    this.setState({
+                        userProject: project,
+                        userName: name,
+                        userSection: section,
+                        userGroup: group,
+                        userEmail: email
+                    })
+                    this.state.userName = this.state.userName
+                    this.state.userSection = this.state.userSection
+                    console.log(`PROJECT: ${this.state.userProject}`)
+                    console.log(`NAME ${this.state.userName}`)
+                    console.log(`SECTION: ${this.state.userSection}`)
+                    console.log(`GROUP: ${this.state.userGroup}`)
+                    console.log(`EMAIL: ${this.state.userEmail}`)
+                })
+                // console.log(currentUser)
               this.setState({
-                  userEmail: user.email
+                  userEmail: user.email,
               })
+              
                 //* - - LOAD ALL STATES OF CHECK OUT - - //
 
                 // fire.firestore().collection()
@@ -661,6 +747,10 @@ export default class Dashboard extends Component {
 
     }
 
+    checkoutDocument = () => {
+        console.log(this.state.userAccount)
+    }
+
     handleChange = (e) => {
         if (this.state.todoPressed == true) {
             this.setState({
@@ -783,13 +873,19 @@ export default class Dashboard extends Component {
         return(
             <Styles>
                 <div className="parent">
+                    <label><b>SECTION:</b> {this.state.userSection}</label>
                     <button
                     onClick={this.logout}
                     ><b>Logout</b></button>
+                    <div className="projectTitle">
+                        <h1><b>{this.state.userProject}</b></h1>
+                    </div>
                     <div className="uEmail">
-                        <h4>User: {this.state.userEmail}</h4>
+                        <h4><b>USER:</b> {this.state.userEmail}</h4>
+                        <h6><b>TEAM:</b> {this.state.userGroup}</h6>
                         <br/>
                         <button
+                        onClick={this.checkoutDocument}
                         ><b>Checkout Document</b></button>
                     </div>
                     <div className="veggieFunctions">
