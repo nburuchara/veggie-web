@@ -128,7 +128,7 @@ body {
     font-family: Consolas;
 }
 
-    // - - PUSH / PULL BUTTONS - - //
+    // - - SAVE / Update BUTTONS - - //
 
 .databaseBtns {
     text-align: left;
@@ -294,7 +294,7 @@ export default class Dashboard extends Component {
                 fire.firestore().collection("CS251A").doc("members")
                 .get().then(querySnapshot => {
                     if (querySnapshot.exists) {
-                        this.state.teamA.push(querySnapshot.data())
+                        this.state.teamA.save(querySnapshot.data())
                     }
                     if (this.state.teamA.includes(user.email)) {
 
@@ -363,11 +363,11 @@ export default class Dashboard extends Component {
                 featuresBtnBg: "#F39C12",
                 featuresBtnTxt: "white",
                 featuresPressed: false,
-                todoUsrMsg: "Press the \"Pull\" button (or press \"TODO\" again) to retreive your most recent changes",
+                todoUsrMsg: "Press the \"Update\" button (or press \"TODO\" again) to retreive your most recent changes",
                 usrMsgColor: "white"
             })
         } else {
-            this.pull()
+            this.update()
 
         }
     }
@@ -380,7 +380,7 @@ export default class Dashboard extends Component {
                 bugCmpnt: true,
                 bugPressed: true,
                 usrMsgColor: "white",
-                bugUsrMsg: "Press the \"Pull\" button (or press \"BUGS\" again) to retreive your most recent changes",
+                bugUsrMsg: "Press the \"Update\" button (or press \"BUGS\" again) to retreive your most recent changes",
                 
                 toDoCmpnt: false,
                 todoBtnBg: "#F39C12",
@@ -406,7 +406,7 @@ export default class Dashboard extends Component {
                 ftrPressed: false
             })
         } else {
-            this.pull()
+            this.update()
         }
     }
 
@@ -419,7 +419,7 @@ export default class Dashboard extends Component {
                 scribPressed: true,
                 scribBtnBg: "#3498DB",
                 usrMsgColor: "white",
-                scribUsrMsg: "Press the \"Pull\" button (or press \"SCRIBBLE\" again) to retreive your most recent changes",
+                scribUsrMsg: "Press the \"Update\" button (or press \"SCRIBBLE\" again) to retreive your most recent changes",
                 toDoCmpnt: false,
                 todoBtnBg: "#F39C12",
                 todoBtnTxt: "white",
@@ -452,7 +452,7 @@ export default class Dashboard extends Component {
                 ganttCmpnt: true,
                 ganttPressed: true,
                 usrMsgColor: "white",
-                ganttUsrMsg: "Press the \"Pull\" button (or press \"GANTT\" again) to retreive your most recent changes",
+                ganttUsrMsg: "Press the \"Update\" button (or press \"GANTT\" again) to retreive your most recent changes",
                 
                 toDoCmpnt: false,
                 todoBtnBg: "#F39C12",
@@ -478,7 +478,7 @@ export default class Dashboard extends Component {
                 ftrPressed: false
             })
         } else {
-            this.pull()
+            this.update()
         }
     }
 
@@ -490,7 +490,7 @@ export default class Dashboard extends Component {
                 featuresCmpnt: true,
                 featuresPressed: true,
                 usrMsgColor: "white",
-                featuresUsrMsg: "Press the \"Pull\" button (or press \"FEATURES\" again) to retreive your most recent changes",
+                featuresUsrMsg: "Press the \"Update\" button (or press \"FEATURES\" again) to retreive your most recent changes",
                 
                 toDoCmpnt: false,
                 todoBtnBg: "#F39C12",
@@ -516,7 +516,7 @@ export default class Dashboard extends Component {
                 ftrPressed: false
             })
         } else {
-            this.pull()
+            this.update()
         }
     }
 
@@ -526,31 +526,31 @@ export default class Dashboard extends Component {
     }
 
 
-    push = () => {
+    save = () => {
         if (this.state.todoPressed == true) {
-            this.pushTodo()
+            this.saveTodo()
         } else if (this.state.bugPressed == true) {
-            this.pushBug()
+            this.saveBug()
         } else if (this.state.scribPressed == true) {
-            this.pushScrib()
+            this.saveScrib()
         }
         else if (this.state.ganttPressed == true) {
-            this.pushGantt()
+            this.saveGantt()
         }
         else if (this.state.featuresPressed == true) {
-            this.pushFeatures()
+            this.saveFeatures()
         }
     }
 
-    pushScrib = () => {
+    saveScrib = () => {
         if (this.state.scribCode == this.state.scrib) {
             this.setState({
-                scribUsrMsg: "⚠️ You're about to overwrite your saved code with the BUGS boilerplate. Press \"Pull\" to get the latest changes or make some changes below.",
+                scribUsrMsg: "⚠️ You're about to overwrite your saved code with the BUGS boilerplate. Press \"Update\" to get the latest changes or make some changes below.",
                 usrMsgColor: "#FF311D"
             })
         } else if (this.state.scribCode == "") {
             this.setState({
-                scribUsrMsg: "⚠️ No changes detected to push. Press \"Pull\" to get the latest changes.",
+                scribUsrMsg: "⚠️ No changes detected to save. Press \"Update\" to get the latest changes.",
                 usrMsgColor: "#FF311D"
             })
         } else {
@@ -565,15 +565,15 @@ export default class Dashboard extends Component {
 
     }
 
-    pushBug = () => {
+    saveBug = () => {
         if (this.state.bugCode == this.state.bug) {
             this.setState({
-                bugUsrMsg: "⚠️ You're about to overwrite your saved code with the BUGS boilerplate. Press \"Pull\" to get the latest changes or make some changes below.",
+                bugUsrMsg: "⚠️ You're about to overwrite your saved code with the BUGS boilerplate. Press \"Update\" to get the latest changes or make some changes below.",
                 usrMsgColor: "#FF311D"
             })
         } else if (this.state.bugCode == "") {
             this.setState({
-                bugUsrMsg: "⚠️ No changes detected to push. Press \"Pull\" to get the latest changes.",
+                bugUsrMsg: "⚠️ No changes detected to save. Press \"Update\" to get the latest changes.",
                 usrMsgColor: "#FF311D"
             })
         } else {
@@ -588,15 +588,15 @@ export default class Dashboard extends Component {
     }
 
 
-    pushTodo = () => {
+    saveTodo = () => {
         if (this.state.todoCode == this.state.todo) {
             this.setState({
-                todoUsrMsg: "⚠️ You're about to overwrite your saved code with the TODO boilerplate. Press \"Pull\" to get the latest changes or make some changes below.",
+                todoUsrMsg: "⚠️ You're about to overwrite your saved code with the TODO boilerplate. Press \"Update\" to get the latest changes or make some changes below.",
                 usrMsgColor: "#FF311D"
             })
         } else if (this.state.todoCode == "") {
             this.setState({
-                todoUsrMsg: "⚠️ No changes detected to push. Press \"Pull\" to get the latest changes.",
+                todoUsrMsg: "⚠️ No changes detected to save. Press \"Update\" to get the latest changes.",
                 usrMsgColor: "#FF311D"
             })
         } else {
@@ -610,15 +610,15 @@ export default class Dashboard extends Component {
         }
     }
 
-    pushGantt = () => {
+    saveGantt = () => {
         if (this.state.ganttCode == this.state.gantt) {
             this.setState({
-                ganttUsrMsg: "⚠️ You're about to overwrite your saved code with the BUGS boilerplate. Press \"Pull\" to get the latest changes or make some changes below.",
+                ganttUsrMsg: "⚠️ You're about to overwrite your saved code with the BUGS boilerplate. Press \"Update\" to get the latest changes or make some changes below.",
                 usrMsgColor: "#FF311D"
             })
         } else if (this.state.ganttCode == "") {
             this.setState({
-                ganttUsrMsg: "⚠️ No changes detected to push. Press \"Pull\" to get the latest changes.",
+                ganttUsrMsg: "⚠️ No changes detected to save. Press \"Update\" to get the latest changes.",
                 usrMsgColor: "#FF311D"
             })
         } else {
@@ -633,15 +633,15 @@ export default class Dashboard extends Component {
 
     }
 
-    pushFeatures = () => {
+    saveFeatures = () => {
         if (this.state.featuresCode == this.state.features) {
             this.setState({
-                featuresUsrMsg: "⚠️ You're about to overwrite your saved code with the BUGS boilerplate. Press \"Pull\" to get the latest changes or make some changes below.",
+                featuresUsrMsg: "⚠️ You're about to overwrite your saved code with the BUGS boilerplate. Press \"Update\" to get the latest changes or make some changes below.",
                 usrMsgColor: "#FF311D"
             })
         } else if (this.state.featuresCode == "") {
             this.setState({
-                featuresUsrMsg: "⚠️ No changes detected to push. Press \"Pull\" to get the latest changes.",
+                featuresUsrMsg: "⚠️ No changes detected to save. Press \"Update\" to get the latest changes.",
                 usrMsgColor: "#FF311D"
             })
         } else {
@@ -657,24 +657,24 @@ export default class Dashboard extends Component {
     }
 
 
-    pull = () => {
+    update = () => {
 
        if (this.state.todoPressed == true) {
-          this.pullTodo()
+          this.updateTodo()
        } else if (this.state.bugPressed == true) {
-           this.pullBug()
+           this.updateBug()
        } else if (this.state.scribPressed == true) {
-           this.pullScrib()
+           this.updateScrib()
        }
        else if (this.state.ganttPressed == true) {
-           this.pullGantt()
+           this.updateGantt()
        }
        else if (this.state.featuresPressed == true) {
-           this.pullFeatures()
+           this.updateFeatures()
         }
     }
 
-    pullTodo = () => {
+    updateTodo = () => {
         fire.firestore().collection("TextEditor").doc("currpage").get()
         .then(querySnapshot => {
            if (querySnapshot.exists){
@@ -691,7 +691,7 @@ export default class Dashboard extends Component {
        })
     }
 
-    pullBug = () => {
+    updateBug = () => {
         fire.firestore().collection("TextEditor").doc("currBug").get()
         .then(querySnapshot => {
            if (querySnapshot.exists){
@@ -708,7 +708,7 @@ export default class Dashboard extends Component {
        })
     }
 
-    pullScrib = () => {
+    updateScrib = () => {
         fire.firestore().collection("TextEditor").doc("currScrib").get()
         .then(querySnapshot => {
            if (querySnapshot.exists){
@@ -726,7 +726,7 @@ export default class Dashboard extends Component {
 
     }
 
-    pullGantt = () => {
+    updateGantt = () => {
         fire.firestore().collection("TextEditor").doc("currGantt").get()
         .then(querySnapshot => {
            if (querySnapshot.exists){
@@ -744,7 +744,7 @@ export default class Dashboard extends Component {
 
     }
 
-    pullFeatures = () => {
+    updateFeatures = () => {
         fire.firestore().collection("TextEditor").doc("currFeatures").get()
         .then(querySnapshot => {
            if (querySnapshot.exists){
@@ -770,32 +770,32 @@ export default class Dashboard extends Component {
         if (this.state.todoPressed == true) {
             this.setState({
                 [e.target.id]: e.target.value,
-                todoUsrMsg: "⚠️ Changes have been made. Press \"Push\" to save your changes, otherwise they may be lost.",
+                todoUsrMsg: "⚠️ Changes have been made. Press \"Save\" to save your changes, otherwise they may be lost.",
                 usrMsgColor: "#FF311D"
             })
         } else if (this.state.bugPressed == true) {
             this.setState({
                 [e.target.id]: e.target.value,
-                bugUsrMsg: "⚠️ Changes have been made. Press \"Push\" to save your changes, otherwise they may be lost.",
+                bugUsrMsg: "⚠️ Changes have been made. Press \"Save\" to save your changes, otherwise they may be lost.",
                 usrMsgColor: "#FF311D"
             })
         } else if (this.state.scribPressed == true) {
             this.setState({
                 [e.target.id]: e.target.value,
-                scribUsrMsg: "⚠️ Changes have been made. Press \"Push\" to save your changes, otherwise they may be lost.",
+                scribUsrMsg: "⚠️ Changes have been made. Press \"Save\" to save your changes, otherwise they may be lost.",
                 usrMsgColor: "#FF311D"
             })
         }else if (this.state.ganttPressed == true) {
             this.setState({
                 [e.target.id]: e.target.value,
-                ganttUsrMsg: "⚠️ Changes have been made. Press \"Push\" to save your changes, otherwise they may be lost.",
+                ganttUsrMsg: "⚠️ Changes have been made. Press \"Save\" to save your changes, otherwise they may be lost.",
                 usrMsgColor: "#FF311D"
             })
         }
         else if (this.state.featuresPressed == true) {
             this.setState({
                 [e.target.id]: e.target.value,
-                featuresUsrMsg: "⚠️ Changes have been made. Press \"Push\" to save your changes, otherwise they may be lost.",
+                featuresUsrMsg: "⚠️ Changes have been made. Press \"Save\" to save your changes, otherwise they may be lost.",
                 usrMsgColor: "#FF311D"
             })
         }
@@ -936,7 +936,7 @@ export default class Dashboard extends Component {
                             <br/>
                             {/* <button>Todo</button>
                             <button
-                            onClick={this.pushToDb}
+                            onClick={this.saveToDb}
                             >Done</button> */}
                         </div>
                     }
@@ -951,7 +951,7 @@ export default class Dashboard extends Component {
                             <br/>
                             {/* <button>Todo</button>
                             <button
-                            onClick={this.pushToDb}
+                            onClick={this.saveToDb}
                             >Done</button> */}
                         </div>
                     }
@@ -966,7 +966,7 @@ export default class Dashboard extends Component {
                             <br/>
                             {/* <button>Todo</button>
                             <button
-                            onClick={this.pushToDb}
+                            onClick={this.saveToDb}
                             >Done</button> */}
                         </div>
                     }
@@ -981,7 +981,7 @@ export default class Dashboard extends Component {
                             <br/>
                             {/* <button>Todo</button>
                             <button
-                            onClick={this.pushToDb}
+                            onClick={this.saveToDb}
                             >Done</button> */}
                         </div>
                     }
@@ -996,7 +996,7 @@ export default class Dashboard extends Component {
                             <br/>
                             {/* <button>Todo</button>
                             <button
-                            onClick={this.pushToDb}
+                            onClick={this.saveToDb}
                             >Done</button> */}
                         </div>
                     }
@@ -1004,12 +1004,12 @@ export default class Dashboard extends Component {
                     <h2> TextFill2</h2>
                     <div className="databaseBtns">
                         <button
-                        onClick={this.pull}
-                        ><b>Pull</b></button>
+                        onClick={this.update}
+                        ><b>Update</b></button>
 
                         <button
-                        onClick={this.push}
-                        ><b>Push</b></button>
+                        onClick={this.save}
+                        ><b>Save</b></button>
                     </div>
                 </div>
             </Styles>
