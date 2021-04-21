@@ -7,6 +7,7 @@ import styled from 'styled-components'
 import {UnControlled as CodeMirror} from 'react-codemirror2'
 import { getAllByTestId } from '@testing-library/dom';
 import { findRenderedComponentWithType } from 'react-dom/test-utils';
+import { queryByTestId } from '@testing-library/dom';
 
 
 var code = 'const b = 0;';
@@ -171,8 +172,9 @@ export default class Dashboard extends Component {
             todoPressed: false,
             todoUsrMsg: "",
             todo: `  \n OPTIONAL: \n not started = 🛑 \n in progress = ⏳ \n completed = ✅ \n \n ✍🏾 - - TODO - - ✍🏾
-            \n 🥕 Task 1 \n 🥕 Task 2 \n 🥕 Task 3 \n 
+            \n 🥕 Task 1 \n 🥕 Task 2 \n 🥕 Task 3 \n
             `,
+            saveTodo: "",
 
                 //* - - BUG - - //
             bugCmpnt: false,
@@ -290,38 +292,36 @@ export default class Dashboard extends Component {
                     console.log(`GROUP: ${this.state.userGroup}`)
                     console.log(`EMAIL: ${this.state.userEmail}`)
                 })
-
                 fire.firestore().collection("CS251A").doc("members")
-                .get().then(querySnapshot => {
-                    if (querySnapshot.exists) {
-                        this.state.teamA.push(querySnapshot.data())
-                    }
-                    if (this.state.teamA.includes(user.email)) {
+                .get().then(qs => {
+                    if (qs.exists) {
+                        this.setState({
+                            teamA: qs.data().members
+                        })
+                        if (this.state.teamA.includes(user.email)){
 
+                        }
+                    } else {
+                        console.log("no data heea")
                     }
                 })
-                console.log(`USERNAME: ${this.state.userGroup}`)
-                // console.log(currentUser)
               this.setState({
-                  userEmail: user.email,
+                  userEmail: user.email
               })
-              
-                //* - - LOAD ALL STATES OF CHECK OUT - - //
-
-                // fire.firestore().collection()
             } else {
               this.setState({user:null})
             }
         })
-          fire.firestore().collection("Group1").doc("teamName")
-          .collection("members").doc("data").get()
-          .then(querySnapshot => {
-              if (querySnapshot.exists){
-                  console.log(querySnapshot.data())
-              } else {
-                  console.log("couldn't find")
-              }
-          })
+    }
+
+    pullTodoCode = () => {
+        this.setState({
+
+        })
+        // fire.firestore().collection("CS251A").doc("todo")
+        // .set({
+        //     changes: this.st
+        // })
     }
 
     authListener = () => {
@@ -542,6 +542,10 @@ export default class Dashboard extends Component {
         }
     }
 
+    updateAll = () => {
+        fire.firestore().collection().doc()
+    }
+
     pushScrib = () => {
         if (this.state.scribCode == this.state.scrib) {
             this.setState({
@@ -554,9 +558,13 @@ export default class Dashboard extends Component {
                 usrMsgColor: "#FF311D"
             })
         } else {
-            fire.firestore().collection("TextEditor").doc("currScrib").set({
+            // fire.firestore().collection(this.state.userSection[0]).doc("scribble").set({
+            //     code: this.state.scribCode
+            // })
+            fire.firestore().collection("TestEditor").doc("scribble").set({
                 code: this.state.scribCode
             })
+
             this.setState({
                 scribUsrMsg: "✅ Your changes has been saved.",
                 usrMsgColor: "#93FE3A"
@@ -577,9 +585,13 @@ export default class Dashboard extends Component {
                 usrMsgColor: "#FF311D"
             })
         } else {
-            fire.firestore().collection("TextEditor").doc("currBug").set({
+            // fire.firestore().collection(this.state.userSection[0]).doc("bug").set({
+            //     code: this.state.bugCode
+            // })
+            fire.firestore().collection("TestEditor").doc("bug").set({
                 code: this.state.bugCode
             })
+
             this.setState({
                 bugUsrMsg: "✅ Your changes has been saved.",
                 usrMsgColor: "#93FE3A"
@@ -600,7 +612,10 @@ export default class Dashboard extends Component {
                 usrMsgColor: "#FF311D"
             })
         } else {
-            fire.firestore().collection("TextEditor").doc("currpage").set({
+            // fire.firestore().collection(this.state.userSection[0]).doc("todo").set({
+            //     code: this.state.todoCode
+            // })
+            fire.firestore().collection("TestEditor").doc("todo").set({
                 code: this.state.todoCode
             })
             this.setState({
@@ -622,7 +637,10 @@ export default class Dashboard extends Component {
                 usrMsgColor: "#FF311D"
             })
         } else {
-            fire.firestore().collection("TextEditor").doc("currGantt").set({
+            // fire.firestore().collection(this.state.userSection[0]).doc("gantt").set({
+            //     code: this.state.ganttCode
+            // })
+            fire.firestore().collection("TestEditor").doc("gantt").set({
                 code: this.state.ganttCode
             })
             this.setState({
@@ -644,8 +662,15 @@ export default class Dashboard extends Component {
                 featuresUsrMsg: "⚠️ No changes detected to push. Press \"Pull\" to get the latest changes.",
                 usrMsgColor: "#FF311D"
             })
+            this.pushScrib()
+            this.pushGantt()
+            this.pushBug()
+            this.pushTodo()
         } else {
-            fire.firestore().collection("TextEditor").doc("currFeatures").set({
+            // fire.firestore().collection(this.state.userSection[0]).doc("feature").set({
+            //     code: this.state.featuresCode
+            // })
+            fire.firestore().collection("TestEditor").doc("feature").set({
                 code: this.state.featuresCode
             })
             this.setState({
@@ -658,7 +683,6 @@ export default class Dashboard extends Component {
 
 
     pull = () => {
-
        if (this.state.todoPressed == true) {
           this.pullTodo()
        } else if (this.state.bugPressed == true) {
@@ -675,7 +699,7 @@ export default class Dashboard extends Component {
     }
 
     pullTodo = () => {
-        fire.firestore().collection("TextEditor").doc("currpage").get()
+        fire.firestore().collection("TestEditor").doc("todo").get()
         .then(querySnapshot => {
            if (querySnapshot.exists){
                this.setState({
@@ -692,7 +716,7 @@ export default class Dashboard extends Component {
     }
 
     pullBug = () => {
-        fire.firestore().collection("TextEditor").doc("currBug").get()
+        fire.firestore().collection("TestEditor").doc("bug").get()
         .then(querySnapshot => {
            if (querySnapshot.exists){
                this.setState({
@@ -709,7 +733,7 @@ export default class Dashboard extends Component {
     }
 
     pullScrib = () => {
-        fire.firestore().collection("TextEditor").doc("currScrib").get()
+        fire.firestore().collection("TestEditor").doc("scribble").get()
         .then(querySnapshot => {
            if (querySnapshot.exists){
                this.setState({
@@ -727,7 +751,7 @@ export default class Dashboard extends Component {
     }
 
     pullGantt = () => {
-        fire.firestore().collection("TextEditor").doc("currGantt").get()
+        fire.firestore().collection("TestEditor").doc("gantt").get()
         .then(querySnapshot => {
            if (querySnapshot.exists){
                this.setState({
@@ -745,7 +769,7 @@ export default class Dashboard extends Component {
     }
 
     pullFeatures = () => {
-        fire.firestore().collection("TextEditor").doc("currFeatures").get()
+        fire.firestore().collection("TestEditor").doc("feature").get()
         .then(querySnapshot => {
            if (querySnapshot.exists){
                this.setState({
@@ -763,7 +787,7 @@ export default class Dashboard extends Component {
     }
 
     checkoutDocument = () => {
-        console.log(this.state.userAccount)
+        console.log(this.state.userSection[0])
     }
 
     handleChange = (e) => {
@@ -899,9 +923,9 @@ export default class Dashboard extends Component {
                         <h4><b>USER:</b> {this.state.userEmail}</h4>
                         <h6><b>TEAM:</b> {this.state.userGroup}</h6>
                         <br/>
-                        {/* <button
+                        <button
                         onClick={this.checkoutDocument}
-                        ><b>Checkout Document</b></button> */}
+                        ><b>Checkout Document</b></button>
                     </div>
                     <div className="veggieFunctions">
                         <button
@@ -1005,11 +1029,11 @@ export default class Dashboard extends Component {
                     <div className="databaseBtns">
                         <button
                         onClick={this.pull}
-                        ><b>Pull</b></button>
+                        ><b>Update</b></button>
 
                         <button
                         onClick={this.push}
-                        ><b>Push</b></button>
+                        ><b>Save</b></button>
                     </div>
                 </div>
             </Styles>
