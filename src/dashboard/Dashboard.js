@@ -170,6 +170,7 @@ export default class Dashboard extends Component {
             editStatus: "No one is currently editing the document",
             currentUser:"",
             cBtnColor: "white",
+            cBtnTxt: "Checkout Document",
 
                 //* - - USR MSG STYLE - - //
             usrMsgColor: "white",
@@ -828,12 +829,24 @@ export default class Dashboard extends Component {
                 active: this.state.userEmail
             })
             this.setState({
-                checkoutPower: true
+                checkoutPower: true,
+                editStatus: "You have successfully checked out the document",
+                cBtnColor: "white"
             })
+        } else if (this.state.userEmail == this.state.currentUser) {
+            fire.firestore().collection("CS251A").doc("editing")
+            .set({
+                active: "inactive"
+            })
+            this.setState({
+                editStatus: `You have checked the document back in`,
+                cBtnColor: "white"
+            }) 
         } else {
             this.setState({
-                editStatus: `You currently do not have access to edit. ${this.state.userName} is working on the document`
-            }) 
+                editStatus: "You cannot edit the document. Someone else has checked it out",
+                cBtnColor: "#FF311D"
+            })
         }
     }
 
@@ -960,6 +973,8 @@ export default class Dashboard extends Component {
             color: this.state.cBtnColor
         }
 
+        let cBtnStyle = {}
+
         return(
             <Styles>
                 <div className="parent">
@@ -976,7 +991,7 @@ export default class Dashboard extends Component {
                         <br/>
                         <button
                         onClick={this.checkoutDocument}
-                        ><b>Checkout Document</b></button>
+                        ><b>{this.state.cBtnTxt}</b></button>
                         <h5 style={editStyle}>{this.state.editStatus}</h5>
                     </div>
                     <div className="veggieFunctions">
