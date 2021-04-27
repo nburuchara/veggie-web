@@ -73,6 +73,12 @@ body {
     margin-bottom: 0px;
 }
 
+.uEmail h5 {
+    margin-left: 62.5px;
+    color: white;
+    font-family: Karla;
+}
+
 .uEmail h6 {
     margin-top: 10px;
     margin-left: 62.5px;
@@ -160,6 +166,10 @@ export default class Dashboard extends Component {
             userEmail: "",
             teamA: [],
             teamB: [],
+            checkoutPower: false,
+            editStatus: "No one is currently editing the document",
+            currentUser:"",
+            cBtnColor: "white",
 
                 //* - - USR MSG STYLE - - //
             usrMsgColor: "white",
@@ -235,6 +245,9 @@ export default class Dashboard extends Component {
     }
 
     componentDidMount = () => {
+        this.setState({
+            checkoutPower: false
+        })
         fire.auth().onAuthStateChanged((user) => {
             if (user) {
                 class User {
@@ -292,6 +305,14 @@ export default class Dashboard extends Component {
                     console.log(`GROUP: ${this.state.userGroup}`)
                     console.log(`EMAIL: ${this.state.userEmail}`)
                 })
+                fire.firestore().collection("CS251A").doc("editing")
+                .get().then(qs => {
+                    if(qs.exists) {
+                        this.setState({
+                            currentUser: qs.data().active
+                        })
+                    }
+                })
                 fire.firestore().collection("CS251A").doc("members")
                 .get().then(qs => {
                     if (qs.exists) {
@@ -299,7 +320,7 @@ export default class Dashboard extends Component {
                             teamA: qs.data().members
                         })
                         if (this.state.teamA.includes(user.email)){
-
+                            
                         }
                     } else {
                         console.log("no data heea")
@@ -363,7 +384,7 @@ export default class Dashboard extends Component {
                 featuresBtnBg: "#F39C12",
                 featuresBtnTxt: "white",
                 featuresPressed: false,
-                todoUsrMsg: "Press the \"Pull\" button (or press \"TODO\" again) to retreive your most recent changes",
+                todoUsrMsg: "Press the \"Update\" button to retreive your most recent changes",
                 usrMsgColor: "white"
             })
         } else {
@@ -380,7 +401,7 @@ export default class Dashboard extends Component {
                 bugCmpnt: true,
                 bugPressed: true,
                 usrMsgColor: "white",
-                bugUsrMsg: "Press the \"Pull\" button (or press \"BUGS\" again) to retreive your most recent changes",
+                bugUsrMsg: "Press the \"Update\" button to retreive your most recent changes",
                 
                 toDoCmpnt: false,
                 todoBtnBg: "#F39C12",
@@ -419,7 +440,7 @@ export default class Dashboard extends Component {
                 scribPressed: true,
                 scribBtnBg: "#3498DB",
                 usrMsgColor: "white",
-                scribUsrMsg: "Press the \"Pull\" button (or press \"SCRIBBLE\" again) to retreive your most recent changes",
+                scribUsrMsg: "Press the \"Update\" button to retreive your most recent changes",
                 toDoCmpnt: false,
                 todoBtnBg: "#F39C12",
                 todoBtnTxt: "white",
@@ -452,7 +473,7 @@ export default class Dashboard extends Component {
                 ganttCmpnt: true,
                 ganttPressed: true,
                 usrMsgColor: "white",
-                ganttUsrMsg: "Press the \"Pull\" button (or press \"GANTT\" again) to retreive your most recent changes",
+                ganttUsrMsg: "Press the \"Update\" button  to retreive your most recent changes",
                 
                 toDoCmpnt: false,
                 todoBtnBg: "#F39C12",
@@ -478,7 +499,7 @@ export default class Dashboard extends Component {
                 ftrPressed: false
             })
         } else {
-            this.pull()
+            
         }
     }
 
@@ -490,7 +511,7 @@ export default class Dashboard extends Component {
                 featuresCmpnt: true,
                 featuresPressed: true,
                 usrMsgColor: "white",
-                featuresUsrMsg: "Press the \"Pull\" button (or press \"FEATURES\" again) to retreive your most recent changes",
+                featuresUsrMsg: "Press the \"Update\" button to retreive your most recent changes",
                 
                 toDoCmpnt: false,
                 todoBtnBg: "#F39C12",
@@ -516,7 +537,7 @@ export default class Dashboard extends Component {
                 ftrPressed: false
             })
         } else {
-            this.pull()
+            
         }
     }
 
@@ -527,18 +548,25 @@ export default class Dashboard extends Component {
 
 
     push = () => {
-        if (this.state.todoPressed == true) {
-            this.pushTodo()
-        } else if (this.state.bugPressed == true) {
-            this.pushBug()
-        } else if (this.state.scribPressed == true) {
-            this.pushScrib()
-        }
-        else if (this.state.ganttPressed == true) {
-            this.pushGantt()
-        }
-        else if (this.state.featuresPressed == true) {
-            this.pushFeatures()
+        if (this.state.checkoutPower == true) {
+            if (this.state.todoPressed == true) {
+                this.pushTodo()
+            } else if (this.state.bugPressed == true) {
+                this.pushBug()
+            } else if (this.state.scribPressed == true) {
+                this.pushScrib()
+            }
+            else if (this.state.ganttPressed == true) {
+                this.pushGantt()
+            }
+            else if (this.state.featuresPressed == true) {
+                this.pushFeatures()
+            }
+        } else {
+            this.setState({
+                editStatus: "⚠️ Please check out the document first",
+                cBtnColor: "#FF311D"
+            })
         }
     }
 
@@ -554,14 +582,14 @@ export default class Dashboard extends Component {
             })
         } else if (this.state.scribCode == "") {
             this.setState({
-                scribUsrMsg: "⚠️ No changes detected to push. Press \"Pull\" to get the latest changes.",
+                scribUsrMsg: "⚠️ No changes detected to push. Press \"Update\" to get the latest changes.",
                 usrMsgColor: "#FF311D"
             })
         } else {
             // fire.firestore().collection(this.state.userSection[0]).doc("scribble").set({
             //     code: this.state.scribCode
             // })
-            fire.firestore().collection("TestEditor").doc("scribble").set({
+            fire.firestore().collection("CS251A").doc("scribble").set({
                 code: this.state.scribCode
             })
 
@@ -581,14 +609,14 @@ export default class Dashboard extends Component {
             })
         } else if (this.state.bugCode == "") {
             this.setState({
-                bugUsrMsg: "⚠️ No changes detected to push. Press \"Pull\" to get the latest changes.",
+                bugUsrMsg: "⚠️ No changes detected to push. Press \"Update\" to get the latest changes.",
                 usrMsgColor: "#FF311D"
             })
         } else {
             // fire.firestore().collection(this.state.userSection[0]).doc("bug").set({
             //     code: this.state.bugCode
             // })
-            fire.firestore().collection("TestEditor").doc("bug").set({
+            fire.firestore().collection("CS251A").doc("bug").set({
                 code: this.state.bugCode
             })
 
@@ -608,14 +636,14 @@ export default class Dashboard extends Component {
             })
         } else if (this.state.todoCode == "") {
             this.setState({
-                todoUsrMsg: "⚠️ No changes detected to push. Press \"Pull\" to get the latest changes.",
+                todoUsrMsg: "⚠️ No changes detected to push. Press \"Update\" to get the latest changes.",
                 usrMsgColor: "#FF311D"
             })
         } else {
             // fire.firestore().collection(this.state.userSection[0]).doc("todo").set({
             //     code: this.state.todoCode
             // })
-            fire.firestore().collection("TestEditor").doc("todo").set({
+            fire.firestore().collection("CS251A").doc("todo").set({
                 code: this.state.todoCode
             })
             this.setState({
@@ -633,14 +661,14 @@ export default class Dashboard extends Component {
             })
         } else if (this.state.ganttCode == "") {
             this.setState({
-                ganttUsrMsg: "⚠️ No changes detected to push. Press \"Pull\" to get the latest changes.",
+                ganttUsrMsg: "⚠️ No changes detected to push. Press \"Update\" to get the latest changes.",
                 usrMsgColor: "#FF311D"
             })
         } else {
             // fire.firestore().collection(this.state.userSection[0]).doc("gantt").set({
             //     code: this.state.ganttCode
             // })
-            fire.firestore().collection("TestEditor").doc("gantt").set({
+            fire.firestore().collection("CS251A").doc("gantt").set({
                 code: this.state.ganttCode
             })
             this.setState({
@@ -659,7 +687,7 @@ export default class Dashboard extends Component {
             })
         } else if (this.state.featuresCode == "") {
             this.setState({
-                featuresUsrMsg: "⚠️ No changes detected to push. Press \"Pull\" to get the latest changes.",
+                featuresUsrMsg: "⚠️ No changes detected to push. Press \"Update\" to get the latest changes.",
                 usrMsgColor: "#FF311D"
             })
             this.pushScrib()
@@ -670,7 +698,7 @@ export default class Dashboard extends Component {
             // fire.firestore().collection(this.state.userSection[0]).doc("feature").set({
             //     code: this.state.featuresCode
             // })
-            fire.firestore().collection("TestEditor").doc("feature").set({
+            fire.firestore().collection("CS251A").doc("feature").set({
                 code: this.state.featuresCode
             })
             this.setState({
@@ -683,23 +711,30 @@ export default class Dashboard extends Component {
 
 
     pull = () => {
-       if (this.state.todoPressed == true) {
-          this.pullTodo()
-       } else if (this.state.bugPressed == true) {
-           this.pullBug()
-       } else if (this.state.scribPressed == true) {
-           this.pullScrib()
-       }
-       else if (this.state.ganttPressed == true) {
-           this.pullGantt()
-       }
-       else if (this.state.featuresPressed == true) {
-           this.pullFeatures()
+        if (this.state.checkoutPower == true) {
+            if (this.state.todoPressed == true) {
+                this.pullTodo()
+            } else if (this.state.bugPressed == true) {
+                this.pullBug()
+            } else if (this.state.scribPressed == true) {
+                this.pullScrib()
+            }
+            else if (this.state.ganttPressed == true) {
+                this.pullGantt()
+            }
+            else if (this.state.featuresPressed == true) {
+                this.pullFeatures()
+            }
+        } else {
+            this.setState({
+                editStatus: "⚠️ Please check out the document first",
+                cBtnColor: "#FF311D"
+            })
         }
     }
 
     pullTodo = () => {
-        fire.firestore().collection("TestEditor").doc("todo").get()
+        fire.firestore().collection("CS251A").doc("todo").get()
         .then(querySnapshot => {
            if (querySnapshot.exists){
                this.setState({
@@ -716,7 +751,7 @@ export default class Dashboard extends Component {
     }
 
     pullBug = () => {
-        fire.firestore().collection("TestEditor").doc("bug").get()
+        fire.firestore().collection("CS251A").doc("bug").get()
         .then(querySnapshot => {
            if (querySnapshot.exists){
                this.setState({
@@ -733,7 +768,7 @@ export default class Dashboard extends Component {
     }
 
     pullScrib = () => {
-        fire.firestore().collection("TestEditor").doc("scribble").get()
+        fire.firestore().collection("CS251A").doc("scribble").get()
         .then(querySnapshot => {
            if (querySnapshot.exists){
                this.setState({
@@ -751,7 +786,7 @@ export default class Dashboard extends Component {
     }
 
     pullGantt = () => {
-        fire.firestore().collection("TestEditor").doc("gantt").get()
+        fire.firestore().collection("CS251A").doc("gantt").get()
         .then(querySnapshot => {
            if (querySnapshot.exists){
                this.setState({
@@ -769,7 +804,7 @@ export default class Dashboard extends Component {
     }
 
     pullFeatures = () => {
-        fire.firestore().collection("TestEditor").doc("feature").get()
+        fire.firestore().collection("CS251A").doc("feature").get()
         .then(querySnapshot => {
            if (querySnapshot.exists){
                this.setState({
@@ -787,7 +822,19 @@ export default class Dashboard extends Component {
     }
 
     checkoutDocument = () => {
-        console.log(this.state.userSection[0])
+        if (this.state.currentUser == "inactive") {
+            fire.firestore().collection("CS251A").doc("editing")
+            .set({
+                active: this.state.userEmail
+            })
+            this.setState({
+                checkoutPower: true
+            })
+        } else {
+            this.setState({
+                editStatus: `You currently do not have access to edit. ${this.state.userName} is working on the document`
+            }) 
+        }
     }
 
     handleChange = (e) => {
@@ -909,6 +956,10 @@ export default class Dashboard extends Component {
             marginRight: "45px"
         }
 
+        let editStyle = {
+            color: this.state.cBtnColor
+        }
+
         return(
             <Styles>
                 <div className="parent">
@@ -926,6 +977,7 @@ export default class Dashboard extends Component {
                         <button
                         onClick={this.checkoutDocument}
                         ><b>Checkout Document</b></button>
+                        <h5 style={editStyle}>{this.state.editStatus}</h5>
                     </div>
                     <div className="veggieFunctions">
                         <button
