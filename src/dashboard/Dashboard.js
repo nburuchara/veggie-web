@@ -833,7 +833,7 @@ export default class Dashboard extends Component {
                 editStatus: "You have successfully checked out the document",
                 cBtnColor: "white"
             })
-        } else if (this.state.userEmail == this.state.currentUser) {
+        } else if (this.state.userEmail[0] == this.state.currentUser[0]) {
             fire.firestore().collection("CS251A").doc("editing")
             .set({
                 active: "inactive"
