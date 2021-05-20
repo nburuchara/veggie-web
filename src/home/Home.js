@@ -396,8 +396,8 @@ export default class Home extends Component {
                         onChange={this.handleChange}
                         />
                         <h4>Class Section</h4>
-                        <h5>CS251A (Prof. Rab)</h5>
-                        <h5>CS251B (Prof. Olaf</h5>
+                        <h5>CS251A (Prof. Olaf)</h5>
+                        <h5>CS251B (Prof. Rab)</h5>
                         <input
                         id="class"
                         value={this.state.class}

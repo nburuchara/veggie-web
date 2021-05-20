@@ -830,17 +830,21 @@ export default class Dashboard extends Component {
             })
             this.setState({
                 checkoutPower: true,
+                cBtnTxt: "Check In Document",
                 editStatus: "You have successfully checked out the document",
-                cBtnColor: "white"
+                cBtnColor: "white",
+                currentUser: this.state.userEmail[0]
             })
-        } else if (this.state.userEmail[0] == this.state.currentUser[0]) {
+        } else if (this.state.userEmail[0] == this.state.currentUser) {
             fire.firestore().collection("CS251A").doc("editing")
             .set({
                 active: "inactive"
             })
             this.setState({
-                editStatus: `You have checked the document back in`,
-                cBtnColor: "white"
+                editStatus: "You have checked the document back in",
+                cBtnColor: "white",
+                currentUser: "inactive",
+                cBtnTxt: "Checkout Document"
             }) 
         } else {
             this.setState({
